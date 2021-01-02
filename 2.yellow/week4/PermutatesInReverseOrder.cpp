@@ -5,11 +5,8 @@
 
 using namespace std;
 
-template <typename T>
-void RemoveDuplicates(vector<T>& elements);
-
 template<typename It>
-void PrintRange (It begin, It end) {
+void PrintRange(It begin, It end) {
     for (auto it = begin; it != end; ++it)
         cout << *it << " ";
     cout << endl;
@@ -26,6 +23,6 @@ int main() {
     do {
         PrintRange(begin(permut), end(permut));
     } while (prev_permutation(begin(permut), end(permut)));
- 
+
     return 0;
 }
