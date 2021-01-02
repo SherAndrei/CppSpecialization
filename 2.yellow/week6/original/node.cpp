@@ -20,7 +20,7 @@ bool CompareTo(const T& lhs, const T& rhs, Comparison cmp) {
   case Comparison::GreaterOrEqual:
     return lhs >= rhs;
   }
-  return false; // make compiler happy
+  return false;
 }
 
 DateComparisonNode::DateComparisonNode(Comparison comparison, const Date& value)
@@ -56,5 +56,5 @@ bool LogicalOperationNode::Evaluate(const Date& date, const string& event) const
   case LogicalOperation::Or:
     return left_->Evaluate(date, event) || right_->Evaluate(date, event);
   }
-  return false; // make compiler happy
+  return false;
 }

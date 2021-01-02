@@ -1,27 +1,4 @@
-﻿/*
-Реализуйте класс TeamTasks, позволяющий хранить статистику по статусам задач команды разработчиков:
-Метод PerformPersonTasks должен реализовывать следующий алгоритм:
-
-Рассмотрим все невыполненные задачи разработчика person.
-Упорядочим их по статусам: сначала все задачи в статусе NEW,
-затем все задачи в статусе IN_PROGRESS и, наконец, задачи в статусе TESTING.
-Рассмотрим первые task_count задач и переведём каждую из них
-в следующий статус в соответствии с естественным порядком: NEW → IN_PROGRESS → TESTING → DONE.
-Вернём кортеж из двух элементов: информацию о статусах обновившихся
-задач (включая те, которые оказались в статусе DONE) и информацию о статусах остальных не выполненных задач.
-В случае отсутствия разработчика с именем person метод
-PerformPersonTasks должен вернуть кортеж из двух пустых TasksInfo
-
-Гарантируется, что task_count является положительным числом.
-Если task_count превышает текущее количество невыполненных задач разработчика,
-достаточно считать, что task_count равен количеству невыполненных задач:
-дважды обновлять статус какой-либо задачи в этом случае не нужно.
-
-Кроме того, гарантируется, что метод GetPersonTasksInfo не будет вызван для разработчика, не имеющего задач.
-*/
-
-
-#include <iostream>
+﻿#include <iostream>
 #include <map>
 #include <algorithm>
 #include <vector>
@@ -79,12 +56,14 @@ class TeamTasks {
     }
 
     tuple<TasksInfo, TasksInfo> PerformPersonTasks(const string& person, int task_count) {
-        vector<TaskStatus> VStatus = { TaskStatus::NEW, TaskStatus::IN_PROGRESS, TaskStatus::TESTING, TaskStatus::DONE};
+        vector<TaskStatus> VStatus = { TaskStatus::NEW,
+                                       TaskStatus::IN_PROGRESS,
+                                       TaskStatus::TESTING,
+                                       TaskStatus::DONE};
 
-        TasksInfo updated_tasks = BuildUpdatedTasks(/*VStatus, */
-person, task_count);
+        TasksInfo updated_tasks = BuildUpdatedTasks(person, task_count);
         TasksInfo untouched_tasks;
-    
+
         for (const auto& status : VStatus) {
             if (updated_tasks.count(status))
                 PersonsTask[person][status] += updated_tasks[status];
@@ -100,8 +79,9 @@ person, task_count);
 
         return tie(updated_tasks, untouched_tasks);
     }
+
  private:
-    TasksInfo BuildUntouchedTasks(const string& person,TasksInfo& updated_tasks) {
+    TasksInfo BuildUntouchedTasks(const string& person, TasksInfo& updated_tasks) {
         TasksInfo untouched_tasks;
 
         for (const auto& [status, amount] : PersonsTask[person]) {
@@ -111,7 +91,7 @@ person, task_count);
                 else
                     untouched_tasks[status] = PersonsTask[person][status];
             }
-         
+
             if (untouched_tasks.count(status) && untouched_tasks.at(status) == 0)
                 untouched_tasks.erase(status);
         }
@@ -128,7 +108,6 @@ person, task_count);
                 } else {
                     break;
                 }
-
             }
         }
 
@@ -139,8 +118,6 @@ person, task_count);
  private:
     map<string, TasksInfo> PersonsTask;
 };
-
-
 
 
 int main() {
@@ -156,42 +133,31 @@ int main() {
         tasks.AddNewTask("Alice");
     }
     tie(updated_tasks, untouched_tasks) = tasks.PerformPersonTasks("Alice", 5);
-    PrintTasksInfo(updated_tasks, untouched_tasks);  // [{"IN_PROGRESS": 5}, {}]
+    PrintTasksInfo(updated_tasks, untouched_tasks);
 
     tie(updated_tasks, untouched_tasks) = tasks.PerformPersonTasks("Alice", 5);
-    PrintTasksInfo(updated_tasks, untouched_tasks);  // [{"TESTING": 5}, {}]
+    PrintTasksInfo(updated_tasks, untouched_tasks);
 
     tie(updated_tasks, untouched_tasks) = tasks.PerformPersonTasks("Alice", 1);
-    PrintTasksInfo(updated_tasks, untouched_tasks);  // [{"DONE": 1}, {"TESTING": 4}]
+    PrintTasksInfo(updated_tasks, untouched_tasks);
 
     for (auto i = 0; i < 5; ++i) {
         tasks.AddNewTask("Alice");
     }
-    tie(updated_tasks, untouched_tasks) = tasks.PerformPersonTasks("Alice", 2);  // [{"IN_PROGRESS": 2}, {"NEW": 3, "TESTING": 4}]
+    tie(updated_tasks, untouched_tasks) = tasks.PerformPersonTasks("Alice", 2);
     PrintTasksInfo(updated_tasks, untouched_tasks);
 
-    PrintTasksInfo(tasks.GetPersonTasksInfo("Alice"));  // {"NEW": 3, "IN_PROGRESS": 2, "TESTING": 4, "DONE": 1}
+    PrintTasksInfo(tasks.GetPersonTasksInfo("Alice"));
     std::cout << std::endl;
 
     tie(updated_tasks, untouched_tasks) = tasks.PerformPersonTasks("Alice", 4);
-    PrintTasksInfo(updated_tasks, untouched_tasks);  // [{"IN_PROGRESS": 3, "TESTING": 1}, {"IN_PROGRESS": 1, "TESTING": 4}]
+    PrintTasksInfo(updated_tasks, untouched_tasks);
 
-    PrintTasksInfo(tasks.GetPersonTasksInfo("Alice"));  // {"IN_PROGRESS": 4, "TESTING": 5, "DONE": 1}
+    PrintTasksInfo(tasks.GetPersonTasksInfo("Alice"));
     std::cout << std::endl;
 
     return 0;
 }
-    /*
-    Alice
-    Updated: [IN_PROGRESS: 5 ] Untouched: []
-    Updated: [TESTING: 5 ] Untouched: []
-    Updated: [DONE: 1 ] Untouched: [TESTING: 4 ]
-    Updated: [IN_PROGRESS: 2 ] Untouched: [NEW: 3 TESTING: 4 ]
-    NEW: 3 IN_PROGRESS: 2 TESTING: 4 DONE: 1
-    Updated: [IN_PROGRESS: 3 TESTING: 1 ] Untouched: [IN_PROGRESS: 1 TESTING: 4 ]
-    IN_PROGRESS: 4 TESTING: 5 DONE: 1
-    */
-
 
 // ПРИМЕР ЧУЖОГО КОДА:
 

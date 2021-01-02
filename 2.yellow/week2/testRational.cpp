@@ -97,24 +97,32 @@ class TestRunner {
     int fail_count = 0;
 };
 
+class Rational {
+ public:
+  Rational();
+  Rational(int numerator, int denominator);
+
+  int Numerator() const;
+  int Denominator() const;
+};
 
 void TestDefaultConstructor() {
-    AssertEqual(Rational().Numerator()  , Rational(0,1).Numerator());
-    AssertEqual(Rational().Denominator(), Rational(0,1).Denominator());
+    AssertEqual(Rational().Numerator(),   Rational(0, 1).Numerator());
+    AssertEqual(Rational().Denominator(), Rational(0, 1).Denominator());
 }
 
 void TestConstructorForPositive() {
     mt19937 gen;
-    uniform_int_distribution<> unif (1, 100);
+    uniform_int_distribution<> unif(1, 100);
 
     for (auto i = 0; i < 50; ++i) {
-        auto a = unif (gen);
+        auto a = unif(gen);
 
-        AssertEqual(Rational(a,a).Numerator(),   Rational(1,1).Numerator());
-        AssertEqual(Rational(a,a).Denominator(), Rational(1,1).Denominator());
+        AssertEqual(Rational(a, a).Numerator(),   Rational(1, 1).Numerator());
+        AssertEqual(Rational(a, a).Denominator(), Rational(1, 1).Denominator());
 
-        AssertEqual(Rational(a*a, a).Numerator(),   Rational(a,1).Numerator());
-        AssertEqual(Rational(a*a, a).Denominator(), Rational(a,1).Denominator());
+        AssertEqual(Rational(a * a, a).Numerator(),   Rational(a, 1).Numerator());
+        AssertEqual(Rational(a * a, a).Denominator(), Rational(a, 1).Denominator());
 
         AssertEqual(Rational(a, a * a).Numerator(),   Rational(1, a).Numerator());
         AssertEqual(Rational(a, a * a).Denominator(), Rational(1, a).Denominator());
@@ -129,16 +137,16 @@ void TestConstructorForPositive() {
 
 void TestConstructorForNegative() {
     mt19937 gen;
-    uniform_int_distribution<> unif (-100, -1);
+    uniform_int_distribution<> unif(-100, -1);
 
     for (auto i = 0; i < 50; ++i) {
-        auto a = unif (gen);
+        auto a = unif(gen);
 
-        AssertEqual(Rational(a,a).Numerator(),   Rational(1,1).Numerator());
-        AssertEqual(Rational(a,a).Denominator(), Rational(1,1).Denominator());
+        AssertEqual(Rational(a, a).Numerator(),   Rational(1, 1).Numerator());
+        AssertEqual(Rational(a, a).Denominator(), Rational(1, 1).Denominator());
 
-        AssertEqual(Rational(a*a, a).Numerator(),   Rational(a,1).Numerator());
-        AssertEqual(Rational(a*a, a).Denominator(), Rational(a,1).Denominator());
+        AssertEqual(Rational(a * a, a).Numerator(),   Rational(a, 1).Numerator());
+        AssertEqual(Rational(a * a, a).Denominator(), Rational(a, 1).Denominator());
 
         AssertEqual(Rational(a, a * a).Numerator(),   Rational(-1, -a).Numerator());
         AssertEqual(Rational(a, a * a).Denominator(), Rational(-1, -a).Denominator());
@@ -152,10 +160,10 @@ void TestConstructorForNegative() {
 }
 void TestConstuctorForZeroNumerator() {
     mt19937 gen;
-    uniform_int_distribution<> unif (-10, 10);
+    uniform_int_distribution<> unif(-10, 10);
 
     for (auto i = 0; i < 10; ++i) {
-        auto a = unif (gen);
+        auto a = unif(gen);
         if (a != 0) {
             AssertEqual(Rational(0, a).Numerator(),   Rational(0, 1).Numerator());
             AssertEqual(Rational(0, a).Denominator(), Rational(0, 1).Denominator());

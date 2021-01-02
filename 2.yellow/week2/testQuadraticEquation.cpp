@@ -128,12 +128,12 @@ int GetDistinctRealRootCount(double a, double b, double c) {
 
 void TestRootCount() {
     mt19937 gen;
-    uniform_real_distribution<> unif (-10, 10);
+    uniform_real_distribution<> unif(-10, 10);
 
     for (auto i = 0; i < 100; ++i) {
-        const auto a = unif (gen);
-        const auto b = unif (gen);
-        const auto c = unif (gen);
+        const auto a = unif(gen);
+        const auto b = unif(gen);
+        const auto c = unif(gen);
 
         const auto count = GetDistinctRealRootCount(a, b, c);
 
@@ -144,10 +144,10 @@ void TestRootCount() {
 
 void TestOneRoot() {
     mt19937 gen;
-    uniform_real_distribution<> unif (-10, 10);
+    uniform_real_distribution<> unif(-10, 10);
 
     for (auto i = 0; i < 100; ++i) {
-        const auto x_1 = unif (gen);
+        const auto x_1 = unif(gen);
 
         const auto p = x_1 + x_1;
         const auto q = x_1 * x_1;
