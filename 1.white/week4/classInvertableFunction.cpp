@@ -25,7 +25,6 @@ class FunctionPart {
         switch (operation) {
         case('+'): operation = '-';
             break;
-
         case('-'): operation = '+';
             break;
         case('*'): operation = '/';

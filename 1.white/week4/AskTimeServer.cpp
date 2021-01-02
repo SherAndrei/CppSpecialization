@@ -4,24 +4,12 @@
 using namespace std;
 
 string AskTimeServer() {
-    /* ��� ������������ ������������ ���� ���, ����������� ��������� ��������� ���� ������:
-       * ���������� ������� ���������� ��������
-       * ������ ���������� system_error
-       * ������ ������� ���������� � ����������.
-    */
 
 }
 
 class TimeServer {
  public:
     string GetCurrentTime() {
-        /* ���������� ���� �����:
-            * ���� AskTimeServer() ������� ��������, �������� ��� � last_fetched_time � �������
-            * ���� AskTimeServer() ������� ���������� system_error, ������� ������� ��������
-            ���� last_fetched_time
-            * ���� AskTimeServer() ������� ������ ����������, ���������� ��� ������.
-        */
-
         string tmp;
         try {
             tmp = AskTimeServer();

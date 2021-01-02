@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+
 using namespace std;
 
 int main() {
@@ -9,11 +10,6 @@ int main() {
     cin >> amount;
 
     vector<int> vecNum(amount);
-    string s;
-    s += "Hello"; {
-        s += " world";
-    }
-    cout << s;
     for (int& item : vecNum)
         cin >> item;
 

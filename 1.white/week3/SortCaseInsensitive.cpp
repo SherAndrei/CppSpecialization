@@ -24,8 +24,7 @@ int main() {
                 else
                     return false;
             }
-            }
-        );
+        });
 
     for (auto& item : vecStr)
         cout << item << " ";
@@ -42,7 +41,6 @@ int main() {
 using namespace std;
 
 int main() {
-  // ��������� ������ �����
   int n;
   cin >> n;
   vector<string> v(n);
@@ -50,23 +48,16 @@ int main() {
     cin >> s;
   }
 
-  // ���������
   sort(begin(v), end(v),
-       // ���������� ��� ���������� � ������-�������, ������������ ������ ��� ����� ��������
        [](const string& l, const string& r) {
-         // ���������� �����������������...
          return lexicographical_compare(
-             // ... ��� ������� ������ l ...
              begin(l), end(l),
-             // ... �� ����� ��������� ������ r ...
              begin(r), end(r),
-             // ..., ��������� � �������� ����������� ��������� ��������� �������� ��� ����� ��������
              [](char cl, char cr) { return tolower(cl) < tolower(cr); }
          );
        }
   );
 
-  // ������� ��������������� ������
   for (const string& s : v) {
     cout << s << ' ';
   }

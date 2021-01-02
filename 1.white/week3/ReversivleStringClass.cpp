@@ -10,7 +10,7 @@ class ReversibleString {
     }
 
     void Reverse() {
-        //reverse(begin(myString), end(myString));
+        // reverse(begin(myString), end(myString));
         for (size_t i = 0; i < myString.size()/2; i++) {
             char temp = myString[i];
             myString[i] = myString[myString.size() - i - 1];

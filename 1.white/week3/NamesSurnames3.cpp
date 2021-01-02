@@ -1,23 +1,9 @@
-/*
-��������� ����� Person �� ������ ������ � ������� � 2�
-�������������, ����������� ������ ��� � ������� ��������
-��� ��������, � ����� ��� ��� ��������.����� �� ������
-����� ������������ �� ���������.
-
-��� ��������� �� ���� ����, ������� ������ ���� �������� :
-
-������ GetFullName � GetFullNameWithHistory ������ �������� "No person";
-������ ChangeFirstName � ChangeLastName ������ ������������ ������.
-����� ����, ���������� �������� ������������ ��� ������, ������� �� ���� ��� ��������.
-*/
-
-
 #include <iostream>
 #include <map>
 #include <vector>
 #include <algorithm>
-using namespace std;
 
+using namespace std;
 
 string reverseToString(const vector<string>& newVec) {
     string result;
@@ -43,7 +29,7 @@ string reverseToString(const vector<string>& newVec) {
 }
 
 string getLast(const map<int, string>& names, int year) {
-    string name;  // ���������� ��� ����������
+    string name;
 
     for (const auto& item : names) {
         if (item.first <= year) {
@@ -57,7 +43,6 @@ string getLast(const map<int, string>& names, int year) {
 }
 
 string getLastHistory(const map<int, string>& names, int year) {
-
     vector<string> vec;
 
     for (const auto& [m_year, name] : names) {

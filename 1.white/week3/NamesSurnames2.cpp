@@ -1,18 +1,8 @@
-/*
-� ������� �� ������ GetFullName, ����� GetFullNameWithHistory
-������ ������� �� ������ ��������� ��� � ������� � ����� �������
-����, �� ��� � ��� ���������� ����� � ������� �
-�������� ��������������� �������.
-���� ������� ����� ������� � ���, ��� ������� ��� ���� ������ �������
-������� ��� ��� �� ���� � �� ��, ������ ��������� ��� ������������
-������� ����� ������������.
-*/
-
-
 #include <iostream>
 #include <map>
 #include <vector>
 #include <algorithm>
+
 using namespace std;
 
 
@@ -40,7 +30,7 @@ string reverseToString(const vector<string>& newVec) {
 }
 
 string getLast(const map<int, string>& names, int year) {
-    string name;  // ���������� ��� ����������
+    string name;
 
     for (const auto& item : names) {
         if (item.first <= year) {
@@ -129,11 +119,8 @@ using namespace std;
 vector<string> FindNamesHistory(const map<int, string>& names_by_year,
                                 int year) {
   vector<string> names;
-  // ���������� ��� ������� � ��������������� �������
   for (const auto& item : names_by_year) {
-    // ���� ��������� ��� �� ��������� � �������� � ���������� �� �����������,
     if (item.first <= year && (names.empty() || names.back() != item.second)) {
-      // ��������� ��� � �������
       names.push_back(item.second);
     }
   }
@@ -141,38 +128,28 @@ vector<string> FindNamesHistory(const map<int, string>& names_by_year,
 }
 
 string BuildJoinedName(vector<string> names) {
-  // ��� ������� � ��� ����������
   if (names.empty()) {
     return "";
   }
-  // ������ ������ ��������������� ������� �� ��������
   reverse(begin(names), end(names));
 
-  // �������� ������� ������ ��� � ������ ����������
   string joined_name = names[0];
 
-  // ���������� ��� ����������� �����
   for (int i = 1; i < names.size(); ++i) {
     if (i == 1) {
-      // ���� ��� ������ ������������� ���, �������� ��� �� ���������� �������
       joined_name += " (";
     } else {
-      // ���� ��� �� ������ ���, �������� �� ����������� �������
       joined_name += ", ";
     }
-    // � ��������� ��������� ���
     joined_name += names[i];
   }
 
-  // ���� � ������� ���� ������ ������ �����, �� ��������� ������ � ������� �
   if (names.size() > 1) {
     joined_name += ")";
   }
-  // ��� �� ���� �������� ������
   return joined_name;
 }
 
-// ��. ������� ���������� ������
 string BuildFullName(const string& first_name, const string& last_name) {
   if (first_name.empty() && last_name.empty()) {
     return "Incognito";
@@ -195,12 +172,9 @@ class Person {
   }
 
   string GetFullName(int year) {
-    // ����� ������� ��������� ����� � �������
-    // � ������ ������ ��� �������, ��� ��� ��� ���������� ������ ��������� ��� � �������, �� ������ �� �� ������������ ������� �������?
     const vector<string> first_names_history = FindFirstNamesHistory(year);
     const vector<string> last_names_history = FindLastNamesHistory(year);
 
-    // ���������� ������ ��� ������� BuildFullName: ������ ��������� ��� � ������� ��� ������� �� �������, ���� ��� ����������
     string first_name;
     string last_name;
     if (!first_names_history.empty()) {
@@ -213,11 +187,8 @@ class Person {
   }
 
   string GetFullNameWithHistory(int year) {
-    // ������� ������ ��� �� ���� ��������
     const string first_name = BuildJoinedName(FindFirstNamesHistory(year));
-    // ������� ������ ������� �� ���� ��������
     const string last_name = BuildJoinedName(FindLastNamesHistory(year));
-    // ��������� �� � ������� ������� �������
     return BuildFullName(first_name, last_name);
   }
 
@@ -232,7 +203,6 @@ class Person {
   map<int, string> first_names;
   map<int, string> last_names;
 };
-
 
 */
 

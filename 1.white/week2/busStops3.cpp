@@ -1,16 +1,3 @@
-/*
-� ���� ������ ��� ����� ����������� ������ ���������� ���������.
-
-� ������, ��� ������� ��������, ��������� ���������� �������� ���������,
-����� ���� ������ ����� ����� (������� �������� � 1, ������� � 2 � �. �.),
-���� ������� ����� ������������� ��������, �������� ������������� ����� ��������� ���������.
-
-� ������� �� ������ ����������� ��������� � 2�, ������ ���������,
-������� ����� �������� ���� �� ����� ������������� ��������� ��� �����������/���������
-�������������, ������� ������� �����������.
-*/
-
-
 #include <set>
 #include <vector>
 #include <iostream>
@@ -62,15 +49,7 @@ int main() {
     return 0;
 }
 
-//5 2 Marushkino Kokoshkino 1 Kokoshkino 2 Marushkino Kokoshkino 2 Kokoshkino Marushkino 2 Kokoshkino Kokoshkino
-//6 11 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Kokoshkino 11 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Kokoshkino  11 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Kokoshkino  1 Kokoshkino 2 Marushkino Kokoshkino 11 Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Tolstopaltsevo Marushkino Vnukovo Peredelkino Solntsevo Kokoshkino
-//8 2 A B 2 A B 2 A B 2 A B 4 A B C A 4 A B C A 4 A B C A 4 A B A C
-//5 2 A B 2 A B 2 A B 2 A B 2 A B
-//5 2 A B 2 A B 2 A B 2 A B 2 A B
-
 /*
- 
-    ������ ������ ����:
     int main() {
       int q;
       cin >> q;

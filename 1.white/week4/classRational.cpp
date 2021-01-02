@@ -1,5 +1,7 @@
 #include <iostream>
+#include <sstream>
 #include <numeric>
+
 using namespace std;
 
 class Rational {
@@ -30,10 +32,12 @@ class Rational {
     }
 
     Rational operator +  (const Rational& another) {
-        return {(m_numerator * another.m_denominator) + (another.m_numerator * m_denominator), m_denominator * another.m_denominator };
+        return {(m_numerator * another.m_denominator) + (another.m_numerator * m_denominator),
+                 m_denominator * another.m_denominator };
     }
     Rational operator -  (const Rational& another) {
-        return {(m_numerator * another.m_denominator) - (another.m_numerator * m_denominator), m_denominator * another.m_denominator };
+        return {(m_numerator * another.m_denominator) - (another.m_numerator * m_denominator),
+                 m_denominator * another.m_denominator };
     }
     Rational operator *  (const Rational& another) {
         return { m_numerator * another.m_numerator, m_denominator * another.m_denominator };

@@ -1,15 +1,3 @@
-
-/*��� ����� ���������� ���������� ���� �����,
-���� ��� ����� ������� ��������. ����������
-��������� �������� ��� ������� ���������:
-
-ADD word1 word2 � �������� � ������� ���� ��������� (word1, word2).
-COUNT word � ������ ���������� ��������� ����� word.
-CHECK word1 word2 � ���������, �������� �� ����� word1 � word2 ����������.
-����� word1 � word2 ��������� ����������, ���� ����� �������� ADD ��� ����
-�� ���� ������ ADD word1 word2 ��� ADD word2 word1.*/
-
-
 #include <set>
 #include <map>
 #include <vector>
@@ -22,7 +10,6 @@ enum class Request {
     COUNT,
     CHECK
 };
-
 
 Request getRequest(const string& req) {
     if (!req.compare("ADD"))  return Request::ADD;
@@ -89,5 +76,3 @@ int main() {
     wordToSynonyms.clear();
     return 0;
 }
-
-//8 ADD program code COUNT cipher ADD code cipher COUNT code COUNT program CHECK code program CHECK program cipher CHECK cpp java
