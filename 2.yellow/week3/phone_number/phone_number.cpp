@@ -3,6 +3,22 @@
 #include <sstream>
 #include <tuple>
 
+/* 
+PhoneNumber::PhoneNumber(const string& international_number) {
+  istringstream is(international_number);
+
+  char sign = is.get();
+  getline(is, country_code_, '-');
+  getline(is, city_code_, '-');
+  getline(is, local_number_);
+
+  if (sign != '+' || country_code_.empty() || city_code_.empty() || local_number_.empty()) {
+    throw invalid_argument("Phone number must begin with '+'
+           symbol and contain 3 parts separated by '-' symbol: " + international_number);
+  }
+}
+*/
+
 tuple<string, string, string> parse(const string& international_number) {
     istringstream number_stream(international_number);
     bool ok = true;
@@ -24,19 +40,6 @@ tuple<string, string, string> parse(const string& international_number) {
     }
     return make_tuple(country_code, city_code, local_number);
 }
-
-//PhoneNumber::PhoneNumber(const string& international_number) {
-//    istringstream is(international_number);
-//
-//    char sign = is.get();
-//    getline(is, country_code_, '-');
-//    getline(is, city_code_, '-');
-//    getline(is, local_number_);
-//
-//    if (sign != '+' || country_code_.empty() || city_code_.empty() || local_number_.empty()) {
-//        throw invalid_argument("Phone number must begin with '+' symbol and contain 3 parts separated by '-' symbol: " + international_number);
-//    }
-//}
 
 PhoneNumber::PhoneNumber(const string& international_number) {
     tie(country_code_, city_code_, local_number_) = parse(international_number);
