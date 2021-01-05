@@ -1,6 +1,7 @@
 #include "token.h"
 #include <stdexcept>
 #include <sstream>
+
 using namespace std;
 
 vector<Token> Tokenize(istream& cl) {
@@ -15,7 +16,8 @@ vector<Token> Tokenize(istream& cl) {
           date += string(1, static_cast<char>(cl.get()));
         }
         if (i < 2) {
-          date += string(1, static_cast<char>(cl.get())); // Consume '-'
+          // Consume '-'
+          date += string(1, static_cast<char>(cl.get()));
         }
       }
       tokens.push_back({date, TokenType::DATE});

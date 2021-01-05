@@ -81,7 +81,7 @@ Date ParseDate(istream& is) {
     string my_date;
     is >> my_date;
     istringstream date_stream(my_date);
- 
+
     bool ok = true;
 
     int year = -1;
@@ -96,7 +96,6 @@ Date ParseDate(istream& is) {
 
     int day = -1;
     ok = ok && (date_stream >> day);
-    //ok = ok && date_stream.eof();
 
     if (!ok) {
         throw logic_error("Wrong date format: " + date_stream.str());

@@ -15,7 +15,7 @@ bool CompareTo(const T& lhs, const T& rhs, Comparison cmp) {
     case Comparison::Greater:        return lhs >  rhs;
     case Comparison::GreaterOrEqual: return lhs >= rhs;
     }
-    return false; // make compiler happy
+    return false;  // make compiler happy
 }
 
 EmptyNode::EmptyNode() {}
@@ -36,7 +36,9 @@ bool EventComparisonNode::Evaluate(const Date& date, const string& event) const 
     return CompareTo(event, m_event, m_cmp);
 }
 
-LogicalOperationNode::LogicalOperationNode(LogicalOperation op, shared_ptr<Node> left, shared_ptr<Node> right) : m_op(op), m_left(left), m_right(right) {}
+LogicalOperationNode::LogicalOperationNode(LogicalOperation op,
+        shared_ptr<Node> left, shared_ptr<Node> right)
+    : m_op(op), m_left(left), m_right(right) {}
 
 bool LogicalOperationNode::Evaluate(const Date& date, const string& event) const {
     switch (m_op) {
@@ -46,4 +48,3 @@ bool LogicalOperationNode::Evaluate(const Date& date, const string& event) const
         return false;
     }
 }
-

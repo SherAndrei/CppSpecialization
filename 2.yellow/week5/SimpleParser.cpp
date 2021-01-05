@@ -7,18 +7,17 @@
 
 using namespace std;
 
-// ��������!
-// ��� �������� ������� ����� ������������ ������ ����� �� ����� �����,
-// � ����� �� ����� ������, �������� � �������� ��������.
-// ��� ����, ����� �������, ��� ��������� ������ ���������.
+// Внимание!
+// Для простоты разбора будем использовать только числа из одной цифры,
+// а также не будет скобок, пробелов и ненужных символов.
+// При этом, будем считать, что выражение всегда корректно.
 
 struct Node {
   virtual int Evaluate() const = 0;
 };
 
-
 struct Value : public Node {
-  Value(char digit) : _value(digit - '0') {}
+  explicit Value(char digit) : _value(digit - '0') {}
 
   int Evaluate() const override { return _value; }
 
@@ -28,7 +27,8 @@ struct Value : public Node {
 
 
 struct Variable : public Node {
-  Variable(const int &x) : _x(x) {}
+  explicit Variable(const int &x)
+    : _x(x) {}
 
   int Evaluate() const override { return _x; }
 
@@ -38,12 +38,11 @@ struct Variable : public Node {
 
 
 struct Op : public Node {
-  Op(char value)
+  explicit Op(char value)
       : precedence([value] {
-          if (value == '*') return 2;
-           else return 1;
-          }()),
-        _op(value) {}
+          return 1 + (value == '*');
+          }())
+      , _op(value) {}
 
   const int precedence;
 

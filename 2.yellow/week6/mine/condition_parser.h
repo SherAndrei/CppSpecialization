@@ -1,16 +1,15 @@
 #pragma once
-#include "node.h"
-
 #include <memory>
 #include <iostream>
+#include <string>
 
-using namespace std;
-
-template <class It>
-shared_ptr<Node> ParseComparison(It& current, It end);
+#include "node.h"
 
 template <class It>
-shared_ptr<Node> ParseExpression(It& current, It end, unsigned precedence);
+std::shared_ptr<Node> ParseComparison(It& current, It end);
 
-shared_ptr<Node> ParseCondition(istream& is);
-string           ParseEvent(istream& is);
+template <class It>
+std::shared_ptr<Node> ParseExpression(It& current, It end, unsigned precedence);
+
+std::shared_ptr<Node> ParseCondition(std::istream& is);
+std::string           ParseEvent(std::istream& is);

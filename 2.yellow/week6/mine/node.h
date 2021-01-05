@@ -1,9 +1,9 @@
 #pragma once
-#include "date.h"
-
 #include <string>
 #include <vector>
 #include <memory>
+#include "date.h"
+
 using namespace std;
 
 enum class Comparison {
@@ -15,25 +15,21 @@ enum class Comparison {
     NotEqual
 };
 
-
 enum class LogicalOperation {
     Or = 1,
     And
 };
-
 
 class Node {
  public:
     virtual bool Evaluate(const Date& date, const string& event) const = 0;
 };
 
-
 class EmptyNode : public Node {
  public:
     EmptyNode();
     bool Evaluate(const Date& date, const string& event) const override;
 };
-
 
 class DateComparisonNode : public Node {
  public:
@@ -44,7 +40,6 @@ class DateComparisonNode : public Node {
     const Date       m_date;
 };
 
-
 class EventComparisonNode : public Node {
  public:
     EventComparisonNode(Comparison cmp, const string& value);
@@ -53,7 +48,6 @@ class EventComparisonNode : public Node {
     const Comparison m_cmp;
     const string     m_event;
 };
-
 
 class LogicalOperationNode : public Node {
  public:
@@ -64,4 +58,3 @@ class LogicalOperationNode : public Node {
     const shared_ptr<Node> m_left;
     const shared_ptr<Node> m_right;
 };
-

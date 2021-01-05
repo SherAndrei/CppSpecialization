@@ -2,7 +2,7 @@
 
 #include <sstream>
 #include <vector>
-using namespace std;
+#include <string>
 
 enum class TokenType {
   DATE,
@@ -14,11 +14,9 @@ enum class TokenType {
   PAREN_RIGHT,
 };
 
-
 struct Token {
-  const string value;
+  const std::string value;
   const TokenType type;
 };
 
-
-vector<Token> Tokenize(istream& cl);
+std::vector<Token> Tokenize(std::istream& cl);

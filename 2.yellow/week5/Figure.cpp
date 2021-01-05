@@ -20,7 +20,6 @@ class Figure {
     const string _type;
 };
 
-
 class Triangle : public Figure {
  public:
     Triangle(int ab, int bc, int ca)
@@ -31,7 +30,9 @@ class Triangle : public Figure {
     string Name()      const override { return "TRIANGLE"; }
     double Perimeter() const override { return AB + BC + CA; }
     double HalfP()     const          { return Perimeter()/2; }
-    double Area()      const override { return sqrt(HalfP()*(HalfP() - AB) * (HalfP() - BC) * (HalfP() - CA)); }
+    double Area()      const override {
+        return sqrt(HalfP() * (HalfP() - AB) * (HalfP() - BC) * (HalfP() - CA));
+    }
 
  private:
     double AB;
@@ -56,9 +57,9 @@ class Rect : public Figure {
 
 class Circle : public Figure {
  public:
-    Circle(int r)
-        : _radius(r){}
- 
+    explicit Circle(int r)
+        : _radius(r) {}
+
     string Name()      const override { return "CIRCLE"; }
     double Perimeter() const override { return 2 * PI * _radius; }
     double Area()      const override { return PI * pow(_radius, 2); }
@@ -66,7 +67,6 @@ class Circle : public Figure {
  private:
     double _radius;
 };
-
 
 shared_ptr<Figure> CreateFigure(istream& is) {
     string name;
@@ -76,20 +76,17 @@ shared_ptr<Figure> CreateFigure(istream& is) {
         int w, h;
         is >> w >> h;
         return make_shared<Rect>(w, h);
-    }
-    else if (name == "TRIANGLE") {
-        int a, b,c;
+    } else if (name == "TRIANGLE") {
+        int a, b, c;
         is >> a >> b >> c;
-        return make_shared<Triangle>(a,b,c);
-    }
-    else if (name == "CIRCLE") {
+        return make_shared<Triangle>(a, b, c);
+    } else if (name == "CIRCLE") {
         int r;
         is >> r;
         return make_shared<Circle>(r);
     }
 
     return {};
-
 }
 
 int main() {
@@ -113,5 +110,3 @@ int main() {
     }
     return 0;
 }
-
-//ADD RECT 2 3 ADD TRIANGLE 3 4 5 ADD RECT 10 20 ADD CIRCLE 5 PRINT

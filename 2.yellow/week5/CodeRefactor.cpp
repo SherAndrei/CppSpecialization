@@ -19,7 +19,6 @@ class Person {
         Do("walks to ") << destination << endl;
     }
 
-
     string Name()     const { return _name; }
     string Activity() const { return _activity; }
 
@@ -28,10 +27,8 @@ class Person {
     const string _activity;
 };
 
-
 class Student : public Person {
  public:
-
     Student(const string& name, const string& favouriteSong)
         : Person(name, "Student")
         , FavouriteSong(favouriteSong) {}
@@ -53,11 +50,8 @@ class Student : public Person {
     const string FavouriteSong;
 };
 
-
-
 class Teacher : public Person {
  public:
-
     Teacher(const string& name, const string& subject)
         : Person(name, "Teacher")
         , Subject(subject) {}
@@ -70,18 +64,15 @@ class Teacher : public Person {
     const string Subject;
 };
 
-
-
 class Policeman : public Person {
  public:
-    Policeman(const string& name)
+    explicit Policeman(const string& name)
         : Person(name, "Policeman") {}
 
     void Check(const Person& pers) const {
         Do("checks ") << pers.Activity() << ". " << pers.Activity() << "'s name is: " << pers.Name() << endl;
     }
 };
-
 
 void VisitPlaces(const Person& pers, const vector<string>& places) {
     for (const auto& p : places) {

@@ -1,8 +1,9 @@
 #include "condition_parser.h"
-#include "token.h"
-
 #include <memory>
 #include <map>
+#include <vector>
+#include "token.h"
+
 using namespace std;
 
 template <class It>
@@ -13,7 +14,7 @@ shared_ptr<Node> ParseComparison(It& current, It end)  {
   Token& column = *current;
   if (column.type != TokenType::COLUMN)
     throw logic_error("Expected column name: date or event");
- 
+
   ++current;
 
   if (current == end)
@@ -22,12 +23,11 @@ shared_ptr<Node> ParseComparison(It& current, It end)  {
   Token& op = *current;
   if (op.type != TokenType::COMPARE_OP)
     throw logic_error("Expected comparison operation");
- 
+
   ++current;
 
   if (current == end)
     throw logic_error("Expected right value of comparison");
- 
 
   Comparison cmp;
   if (op.value == "<") {
@@ -61,18 +61,19 @@ template <class It>
 shared_ptr<Node> ParseExpression(It& current, It end, unsigned precedence) {
   if (current == end)
     return shared_ptr<Node>();
- 
+
   shared_ptr<Node> left;
 
   if (current->type == TokenType::PAREN_LEFT) {
-    ++current; // consume '('
+    ++current;  // consume '('
     left = ParseExpression(current, end, 0u);
     if (current == end || current->type != TokenType::PAREN_RIGHT)
       throw logic_error("Missing right paren");
 
-    ++current; // consume ')'
-  } else
-        left = ParseComparison(current, end);
+    ++current;  // consume ')'
+  } else {
+    left = ParseComparison(current, end);
+  }
 
   const map<LogicalOperation, unsigned> precedences = {
       {LogicalOperation::Or, 1}, {LogicalOperation::And, 2}
@@ -90,11 +91,10 @@ shared_ptr<Node> ParseExpression(It& current, It end, unsigned precedence) {
     if (current_precedence <= precedence)
       break;
 
-    ++current; // consume op
+    ++current;  // consume op
 
     left = make_shared<LogicalOperationNode>(
-        logical_operation, left, ParseExpression(current, end, current_precedence)
-    );
+        logical_operation, left, ParseExpression(current, end, current_precedence));
   }
 
   return left;

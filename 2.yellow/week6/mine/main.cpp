@@ -1,14 +1,14 @@
-#include "tests.h"
-#include "database.h"
-#include "date.h"
-#include "condition_parser.h"
-#include "node.h"
-
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
 #include <functional>
 #include <memory>
+
+#include "tests.h"
+#include "database.h"
+#include "date.h"
+#include "condition_parser.h"
+#include "node.h"
 
 using namespace std;
 
@@ -36,7 +36,7 @@ int main() {
                 return condition->Evaluate(date, event);
             };
 
-            int count = db.Removeif (predicate);
+            int count = db.Removeif(predicate);
             cout << "Removed " << count << " entries" << endl;
         } else if (command == "Find") {
             shared_ptr<Node>             condition = ParseCondition(is);
@@ -45,7 +45,7 @@ int main() {
             };
 
 
-            const auto entries = db.Findif (predicate);
+            const auto entries = db.Findif(predicate);
             for (const auto& entry : entries) {
                 cout << entry << endl;
             }
@@ -66,15 +66,3 @@ int main() {
 
     return 0;
 }
-
-/*
-Add 2017-11-21 Tuesday
-Add 2017-11-20 Monday
-Add 2017-11-21 Weekly meeting
-Print
-Find event != "Weekly meeting"
-Last 2017-11-30
-Del date > 2017-11-20
-Last 2017-11-30
-Last 2017-11-01
-*/

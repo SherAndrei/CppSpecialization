@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
-
-using namespace std;
+#include <string>
 
 class Date {
  public:
@@ -12,7 +11,8 @@ class Date {
     int month() const;
     int day()   const;
 
-    string to_string() const;
+    std::string to_string() const;
+
  public:
     bool operator == (const Date& other) const;
     bool operator != (const Date& other) const;
@@ -22,8 +22,7 @@ class Date {
     bool operator >= (const Date& other) const;
     Date operator =  (const Date& other);
 
-    friend ostream& operator<<(ostream& out, const Date& date);
-
+    friend std::ostream& operator<<(std::ostream& out, const Date& date);
 
  private:
     int m_year;
@@ -31,5 +30,4 @@ class Date {
     int m_day;
 };
 
-
-Date ParseDate(istream& is); 
+Date ParseDate(std::istream& is);
