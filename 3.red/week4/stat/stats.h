@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <string>
 #include <string_view>
 #include <map>
 
@@ -29,7 +30,6 @@ class StatPiece {
   map<string_view, int> counts;
 };
 
-
 class Stats {
  public:
   Stats() = default;
@@ -46,7 +46,7 @@ class Stats {
   // в stats.cpp
   inline static const array<string, 4> known_methods = {"GET", "POST", "DELETE", "PUT"};
 
-  inline static const string default_method= "UNKNOWN";
+  inline static const string default_method = "UNKNOWN";
 
   inline static const array<string, 5> known_uris = {"/", "/product", "/basket", "/help", "/order"};
 
@@ -55,6 +55,5 @@ class Stats {
   StatPiece methods{known_methods, default_method};
   StatPiece uris{known_uris, default_uri};
 };
-
 
 HttpRequest ParseRequest(string_view line);

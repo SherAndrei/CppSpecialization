@@ -1,6 +1,3 @@
-#include "test_runner.h"
-#include "profile.h"
-
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -8,8 +5,10 @@
 #include <vector>
 #include <map>
 
-using namespace std;
+#include "test_runner.h"
+#include "profile.h"
 
+using namespace std;
 
 // TAirport should be enum with sequential items and last item TAirport::Last_
 template <typename TAirport>
@@ -62,7 +61,6 @@ class AirportCounter {
 
  private:
   array<size_t, SIZE> occurrences = {};
-
 };
 
 

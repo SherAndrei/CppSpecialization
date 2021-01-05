@@ -1,9 +1,11 @@
-#include "test_runner.h"
 #include <numeric>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
+
+#include "test_runner.h"
+
 using namespace std;
 
 template <typename Iterator>
@@ -12,14 +14,13 @@ class IteratorRange {
     IteratorRange(Iterator begin, Iterator end)
         : _begin(begin), _end(end), _size(distance(begin, end)) {}
 
-    Iterator begin()  const { return _begin; }    
+    Iterator begin()  const { return _begin; }
     Iterator end()    const { return _end; }
     size_t   size()   const { return _size; }
  private:
     const Iterator _begin, _end;
     const size_t _size;
 };
-
 
 template <typename Iterator>
 class Paginator {
@@ -48,6 +49,7 @@ class Paginator {
         }
         return os;
     }
+
  protected:
     vector<IteratorRange<Iterator>> pages;
 };
@@ -56,9 +58,7 @@ class Paginator {
 template <typename C>
 auto Paginate(C & c, size_t page_size) {
     return Paginator{ c.begin(), c.end(), page_size };
-
 }
-
 
 void TestLooping() {
     vector<int> v(15);
@@ -75,13 +75,12 @@ void TestLooping() {
 
     ASSERT_EQUAL(os.str(), "1 2 3 4 5 6 \n7 8 9 10 11 12 \n13 14 15 \n");
 }
-void TestPageCounts() { {
-        vector<int> v = { 1,2,3 };
-
-
+void TestPageCounts() {
+    {
+        vector<int> v = { 1, 2, 3 };
         ASSERT_EQUAL(Paginate(v, 1).size(), v.size());
     }
-     {
+    {
         vector<int> v(15);
 
         ASSERT_EQUAL(Paginate(v, 1).size(), v.size());
@@ -134,7 +133,7 @@ void TestConstContainer() {
 
     ASSERT_EQUAL(pages, expected);
 }
-//
+
 void TestPagePagination() {
     vector<int> v(22);
     iota(begin(v), end(v), 1);
@@ -149,17 +148,26 @@ void TestPagePagination() {
         }
     }
 
-    const vector<vector<int>> expected = { {1, 2, 3, 4}, {5, 6, 7, 8}, {9}, {10, 11, 12, 13}, {14, 15, 16, 17}, {18}, {19, 20, 21, 22}
+    const vector<vector<int>> expected = {
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9},
+        {10, 11, 12, 13},
+        {14, 15, 16, 17},
+        {18},
+        {19, 20, 21, 22}
     };
 
     ASSERT_EQUAL(lines, expected);
 }
 
-//int main() {
-//    RUN_TEST(TestPageCounts);
-//    RUN_TEST(TestLooping);
-//    RUN_TEST(TestModification);
-//    RUN_TEST(TestPageSizes);
-//    RUN_TEST(TestConstContainer);
-//    RUN_TEST(TestPagePagination);
-//}
+/*
+int main() {
+   RUN_TEST(TestPageCounts);
+   RUN_TEST(TestLooping);
+   RUN_TEST(TestModification);
+   RUN_TEST(TestPageSizes);
+   RUN_TEST(TestConstContainer);
+   RUN_TEST(TestPagePagination);
+}
+*/

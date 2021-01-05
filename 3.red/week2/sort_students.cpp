@@ -6,7 +6,6 @@
 
 using namespace std;
 
-//Оптимизируйте эту функцию
 bool Compare(const Student& first, const Student& second) {
   return first.Less(second);
 }
@@ -44,15 +43,19 @@ void TestComparison() {
 }
 
 void TestSorting() {
-  vector<Student> students { {"Sidor", "Sidorov", {{"maths", 2.}}, 2.}, {"Semen", "Semenov", {{"maths", 4.}}, 4.}, {"Ivan", "Ivanov", {{"maths", 5.}}, 5.}, {"Petr", "Petrov", {{"maths", 3.}}, 3.}, {"Alexander", "Alexandrov", {{"maths", 1.}}, 1.}
+  vector<Student> students {
+      {"Sidor", "Sidorov", {{"maths", 2.}}, 2.},
+      {"Semen", "Semenov", {{"maths", 4.}}, 4.},
+      {"Ivan", "Ivanov",   {{"maths", 5.}}, 5.},
+      {"Petr", "Petrov",   {{"maths", 3.}}, 3.},
+      {"Alexander", "Alexandrov", {{"maths", 1.}}, 1.}
   };
 
   sort(students.begin(), students.end(), Compare);
   ASSERT(is_sorted(students.begin(), students.end(),
     [](Student first, Student second) {
       return first.Less(second);
-    })
-  );
+    }));
 }
 
 int main() {

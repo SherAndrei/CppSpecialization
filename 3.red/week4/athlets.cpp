@@ -24,9 +24,4 @@ int main() {
     for (const auto& s : athlets) {
         cout << s << '\n';
     }
-
 }
-
-/*
-5 42 0 17 42 13 0 123 42 5 13 */
-

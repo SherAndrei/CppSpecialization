@@ -14,7 +14,7 @@ class Deque {
     Deque() = default;
     bool   Empty() const { return _front.empty() && _back.empty(); }
     size_t Size()  const { return _front.size() + _back.size(); }
- 
+
     const T& At(size_t index) const {
         if (index >= Size())
             throw out_of_range("");
@@ -35,10 +35,9 @@ class Deque {
     void PushFront(const T& elem) { _front.push_back(elem); }
     void PushBack(const T& elem)  { _back.push_back(elem); }
 
-
-   //  Deque: |_____/_____|
-   //         \     /\    /
-   // reversed _front _back
+    //  Deque: |_____/_____|
+    //         \     /\    /
+    // reversed _front _back
  private:
     T& AtImpl(size_t i) {
         return (i < _front.size() ? _front[_front.size() - i - 1] : _back[i - _front.size()]);
@@ -48,9 +47,3 @@ class Deque {
     vector<T> _front;
     vector<T> _back;
 };
-
-
-int main() {
-    Deque<int> d;
-    return 0;
-}

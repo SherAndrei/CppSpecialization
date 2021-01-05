@@ -1,6 +1,8 @@
-#include "test_runner.h"
 #include <sstream>
 #include <string>
+
+#include "test_runner.h"
+
 using namespace std;
 
 class Logger {
@@ -32,20 +34,9 @@ class Logger {
 #define LOG(logger, message) \
   logger.SetFile(__FILE__);  \
   logger.SetLine(__LINE__);  \
-  logger.Log(message);  
+  logger.Log(message);
 
 void TestLog() {
-    /* ��� ��������� ����-������ � ���� ������ ��� ����� ����������� ����������
-     * ������ ����� � ��������� �������� (��. ���������� expected ����). ����
-     * �� ��������� �����-�� ��� ���� ������� TestLog, �� ��� ������ ����� ��������,
-     * � ��� ���� �������� ������. ��� ��������.
-     *
-     * ����� ����� ��������, �� ���������� ����������� ������ #line
-     * (http://en.cppreference.com/w/cpp/preprocessor/line), ������� ���������
-     * �������������� ����� ������, � ����� ��� �����. ��������� ���, ������
-     * ����� ������ ������� TestLog ����� ����������� ���������� �� ����, �����
-     * ��� �� ��������� ����� ���*/
-
 #line 1 "logger.cpp"
 
     ostringstream logs;

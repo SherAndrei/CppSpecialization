@@ -6,15 +6,18 @@ using namespace std;
 
 #define PRINT_VALUES(out, x, y)  (out) << (x) << endl << (y) << endl
 
-void Test() { {
+void Test() {
+    {
         ostringstream os;
         PRINT_VALUES(os, 1, 2);
         AssertEqual(os.str(), "1\n2\n");
-    } {
+    }
+    {
         ostringstream os;
         PRINT_VALUES(os, 1 == 1, 2 == 1);
         AssertEqual(os.str(), "1\n0\n");
-    } {
+    }
+    {
         ostringstream os;
         if (true)
             PRINT_VALUES(os, 1, 2);
@@ -22,7 +25,8 @@ void Test() { {
             PRINT_VALUES(os, 3, 4);
 
         AssertEqual(os.str(), "1\n2\n");
-    } {
+    }
+    {
         ostringstream os;
 
         do PRINT_VALUES(os, 1, 2);

@@ -1,76 +1,63 @@
-#include "test_runner.h"
-//#include "../../Utilities/Allocations.hpp"
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <queue>
 #include <stdexcept>
 #include <set>
+
+#include "test_runner.h"
+
 using namespace std;
 
 template <class T>
 class ObjectPool {
  public:
-    T* Allocate()
-    {
+    T* Allocate() {
         T* result;
-        if (!freed.empty())
-        {
+        if (!freed.empty()) {
             result = *(malloced.insert(freed.front()).first);
             freed.pop_front();
         } else {
-            //T* ptrT = new T;
             result = *(malloced.insert(new T).first);
-            //all.insert(ptrT);
         }
         return result;
     }
-    T* TryAllocate()
-    {
-        if (!freed.empty())
-        {
-            T* result = *(malloced.insert(freed.front()).first);;
+    T* TryAllocate() {
+        if (!freed.empty()) {
+            T* result = *(malloced.insert(freed.front()).first);
             freed.pop_front();
             return result;
         }
-        
         return nullptr;
     }
 
-    void Deallocate(T* object)
-    {
+    void Deallocate(T* object) {
         const auto it = malloced.find(object);
-        if (it != malloced.end())
-        {
+        if (it != malloced.end()) {
             freed.push_back(*it);
             malloced.erase(it);
+        } else {
+            throw invalid_argument("");
         }
-        else throw invalid_argument("");
     }
 
-    ~ObjectPool()
-    {
-        while (!malloced.empty())
-        {
+    ~ObjectPool() {
+        while (!malloced.empty()) {
             delete *(malloced.begin());
             malloced.erase(malloced.begin());
         }
-        while (!freed.empty())
-        {
+        while (!freed.empty()) {
             delete freed.back();
             freed.pop_back();
         }
     }
 
  private:
-    //set<T*>   all;
     set<T*> malloced;
     deque<T*> freed;
 };
 
-
 void TestObjectPool() {
-
     ObjectPool<string> pool;
 
     auto p1 = pool.Allocate();
@@ -90,17 +77,13 @@ void TestObjectPool() {
     ASSERT_EQUAL(*pool.Allocate(), "first");
 
     pool.Deallocate(p1);
-
 }
 
 int main() {
     TestRunner tr;
-    //PrintMemoryUsage();
     RUN_TEST(tr, TestObjectPool);
-    //PrintMemoryUsage();
     return 0;
 }
-
 
 /*
 template <class T>

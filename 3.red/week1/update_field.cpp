@@ -7,13 +7,13 @@
 using namespace std;
 
 #define DATE_OPERATOR(x)                                                          \
-bool operator x (Date lhs, Date rhs)                                              \ {                                                                                 \
+bool operator x(Date lhs, Date rhs) {                                            \
     return tie(lhs.year, lhs.month, lhs.day) x tie(rhs.year, rhs.month, rhs.day); \
 }
 
-DATE_OPERATOR(< );
-DATE_OPERATOR(== );
-DATE_OPERATOR(!= );
+DATE_OPERATOR( < );
+DATE_OPERATOR(==);
+DATE_OPERATOR(!=);
 
 istream& operator >> (istream& in, Date& date) {
     in >> date.year;

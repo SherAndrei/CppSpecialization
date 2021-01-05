@@ -26,29 +26,26 @@ class ReadingManager {
             }
         } else {
             users[id] = page;
-            for (int i = page + 1; i <= MAX_PAGE_COUNT; ++i)
-            {
+            for (int i = page + 1; i <= MAX_PAGE_COUNT; ++i) {
                 lagging_people[i]++;
             }
         }
     }
-    double Cheer(int id)
-    {
-        if (users.count(id))
-        {
+    double Cheer(int id) {
+        if (users.count(id)) {
             return (users.size() == 1u)
                 ? 1.0
                 : _DOUBLE(lagging_people[users[id]]) / _DOUBLE(users.size() - 1);
         }
         return 0.0;
     }
+
  private:
     static const int MAX_PAGE_COUNT = 1'000;
 
     map<int, int> users;
     vector<int> lagging_people;
 };
-
 
 void TestReadPage() {
     {
@@ -72,7 +69,6 @@ void TestReadPage() {
         ASSERT_EQUAL(m.Cheer(3), 2.0 / 4.0);
         ASSERT_EQUAL(m.Cheer(4), 3.0 / 4.0);
         ASSERT_EQUAL(m.Cheer(5), 1.0);
-
     }
     {  // add user
         ReadingManager manager;
@@ -231,7 +227,8 @@ void TestReadPage() {
         manager.Read(0, 1000);
         ASSERT_EQUAL(manager.Cheer(0), 1.0);
     }
-    {  // from coursera (https://www.coursera.org/learn/c-plus-plus-red/programming/e72ST/eliektronnaia-knigha/discussions/threads/hLK3cT0AEemHtRKqiMW_lA)
+    {
+    // from coursera (https://www.coursera.org/learn/c-plus-plus-red/programming/e72ST/eliektronnaia-knigha/discussions/threads/hLK3cT0AEemHtRKqiMW_lA)
         ReadingManager manager;
         manager.Read(1, 1);
         manager.Read(1, 3);
@@ -277,11 +274,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    //TestRunner t;
-    //RUN_TEST(t, TestReadPage);
-    //RUN_TEST(t, TestSpeed);
     ReadingManager manager;
-    
     int query_count;
     cin >> query_count;
 

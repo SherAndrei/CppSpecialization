@@ -1,4 +1,5 @@
 #include <string>
+
 #include "test_runner.h"
 
 class Editor {
@@ -142,6 +143,7 @@ int main() {
   RUN_TEST(tr, TestEmptyBuffer);
   return 0;
 }
+
 /*
 #include <list>
 #include <std::string>
@@ -204,6 +206,4 @@ class Editor {
     return it;
   }
 };
-
-
 */

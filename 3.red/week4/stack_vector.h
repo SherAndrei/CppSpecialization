@@ -65,4 +65,3 @@ class StackVector {
   array<T, N> data;
   size_t size = 0;
 };
-

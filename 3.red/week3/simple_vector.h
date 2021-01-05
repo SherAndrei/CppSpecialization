@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdlib>
 #include <algorithm>
-// Реализуйте шаблон SimpleVector
 
 template <typename T>
 class SimpleVector {
@@ -10,11 +9,11 @@ class SimpleVector {
     explicit SimpleVector(size_t size)
         : _size(size), _capacity(size)
         , _begin(new T[size]) {}
- 
+
     ~SimpleVector() { delete[] _begin; }
 
     T& operator[](size_t index) { return _begin[index]; }
- 
+
     T* begin() { return _begin; }
     T* end()   { return _begin + _size; }
 

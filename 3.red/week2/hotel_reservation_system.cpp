@@ -19,23 +19,20 @@ using namespace std;
 
 class BookingManager {
  public:
-    void Book(int64_t time, const string& hotel_name, size_t client_id, uint16_t room_count)
-    {
+    void Book(int64_t time, const string& hotel_name, size_t client_id, uint16_t room_count) {
         last_time = time;
         auto& current_hotel   = hotels[hotel_name];
         UpdateHotel(hotel_name);
         current_hotel.clients.insert(client_id);
         current_hotel.rooms += room_count;
-        current_hotel.reservations.push( {time, client_id, room_count} );
+        current_hotel.reservations.push({time, client_id, room_count});
     }
 
-    size_t Clients(const string& hotel_name)
-    {
+    size_t Clients(const string& hotel_name) {
         UpdateHotel(hotel_name);
         return hotels[hotel_name].clients.size();
     }
-    size_t Rooms(const string& hotel_name)
-    {
+    size_t Rooms(const string& hotel_name) {
         UpdateHotel(hotel_name);
         return hotels[hotel_name].rooms;
     }
@@ -58,29 +55,24 @@ class BookingManager {
     };
 
 
-    void UpdateHotel(const string& hotel_name)
-    {
+    void UpdateHotel(const string& hotel_name) {
         auto& current_hotel = hotels[hotel_name];
-        while (!current_hotel.reservations.empty() && !IsLastDay(current_hotel.reservations.front().time))
-        {
+        while (!current_hotel.reservations.empty() &&
+               !IsLastDay(current_hotel.reservations.front().time)) {
             current_hotel.rooms -= current_hotel.reservations.front().room_count;
             current_hotel.clients.erase(current_hotel.reservations.front().client_id);
             current_hotel.reservations.pop();
         }
     }
-    bool IsLastDay(int64_t another)
-    {
+    bool IsLastDay(int64_t another) {
         return (last_time - ONE_DAY < another) && (another <= last_time);
     }
     static const int64_t ONE_DAY = 86400;
 
-
+ private:
     map<string, Data> hotels;
     int64_t last_time = 0;
 };
-
-
-//11 CLIENTS Marriott ROOMS Marriott BOOK 10 FourSeasons 1 2 BOOK 10 Marriott 1 1 BOOK 86409 FourSeasons 2 1 CLIENTS FourSeasons ROOMS FourSeasons CLIENTS Marriott BOOK 86410 Marriott 2 10 ROOMS FourSeasons ROOMS Marriott
 
 void TestCoursera() {
     {
@@ -97,7 +89,8 @@ void TestCoursera() {
         ASSERT_EQUAL(manager.Rooms("FourSeasons"), 1u);
         ASSERT_EQUAL(manager.Rooms("Marriott"), 10u);
     }
-    {  //unique
+    // unique
+    {
         BookingManager b;
         b.Book(0, "a", 0, 1);
         b.Book(1, "a", 1, 2);
@@ -118,8 +111,8 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    //TestRunner t;
-    //RUN_TEST(t, TestCoursera);
+    // TestRunner t;
+    // RUN_TEST(t, TestCoursera);
 
     BookingManager manager;
 
@@ -138,12 +131,11 @@ int main() {
 
             cin >> time >> hotel_name >> client_id >> room_count;
             manager.Book(time, hotel_name, client_id, room_count);
-        } else if  (query_type == "CLIENTS") {
+        } else if (query_type == "CLIENTS") {
             string hotel_name;
             cin >> hotel_name;
             cout << manager.Clients(hotel_name) << "\n";
-        } else if  (query_type == "ROOMS")
-        {
+        } else if (query_type == "ROOMS") {
             string hotel_name;
             cin >> hotel_name;
             cout << manager.Rooms(hotel_name) << '\n';

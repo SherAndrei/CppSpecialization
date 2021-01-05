@@ -22,9 +22,9 @@ void ReversedCopy(T* source, size_t count, T* destination) {
     T* d_first = destination;
     T* d_last  = destination + count;
 
-    if (d_last <= _first || _last <= d_first)
+    if (d_last <= _first || _last <= d_first) {
         reverse_copy(_first, _last, d_first);
-    else if (d_first > _first) {
+    } else if (d_first > _first) {
         for (size_t i = 0; _first + i < d_first; ++i) {
             *(d_last - i - 1) = *(_first + i);
         }

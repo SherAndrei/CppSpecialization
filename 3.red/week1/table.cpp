@@ -1,10 +1,10 @@
 #include <string>
 #include <vector>
 #include <iostream>
-
 #include <algorithm>
 
 #include "test_runner.h"
+
 using namespace std;
 
 #define LOG(x) cout << #x << " = " << x << endl
@@ -12,10 +12,9 @@ using namespace std;
 template<typename T>
 class Table {
  public:
-    Table(size_t rows, size_t columns)  {
+    Table(size_t rows, size_t columns) {
         Resize(rows, columns);
-    };
-
+    }
 
     void Resize(size_t nRows, size_t nCols) {
         if (nRows == 0 || nCols == 0) {
@@ -79,25 +78,29 @@ void TestSize() { {
     }
 }
 
-void TestFill() { {
+void TestFill() {
+    {
         Table<int> t(3, 3);
         t.fill(1);
         ostringstream os;
         os << t;
         ASSERT_EQUAL(os.str(), "1 1 1\n1 1 1\n1 1 1\n");
-    } {
+    }
+    {
         Table<int> t(1, 3);
         t.fill(1);
         ostringstream os;
         os << t;
         ASSERT_EQUAL(os.str(), "1 1 1\n");
-    } {
+    }
+    {
         Table<int> t(3, 1);
         t.fill(1);
         ostringstream os;
         os << t;
         ASSERT_EQUAL(os.str(), "1\n1\n1\n");
-    } {
+    }
+    {
         Table<string> t(3, 3);
         t.fill("abc");
         ostringstream os;
@@ -106,14 +109,16 @@ void TestFill() { {
     }
 }
 
-void TestOperator() { {
+void TestOperator() {
+    {
         Table<int> t(1, 1);
         t[0][0] = 42;
         ASSERT_EQUAL(t[0][0], 42);
     }
 }
 
-void TestResize() { {
+void TestResize() {
+    {
         Table<int> t(1, 1);
         t.fill(1);
         t.Resize(3, 4);
@@ -122,7 +127,8 @@ void TestResize() { {
         ostringstream os;
         os << t;
         ASSERT_EQUAL(os.str(), "1 0 0 0\n0 0 0 0\n0 0 0 0\n")
-    } {
+    }
+    {
         Table<int> t(3, 3);
         t.fill(1);
         t.Resize(1, 1);

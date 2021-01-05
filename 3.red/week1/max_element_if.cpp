@@ -1,5 +1,3 @@
-//#include "../../Utilities/test_runner.h"
-#include "test_runner.h"
 #include <string>
 #include <vector>
 #include <list>
@@ -8,14 +6,17 @@
 #include <iterator>
 #include <algorithm>
 
+#include "test_runner.h"
+
 using namespace std;
 
 template<typename ForwardIterator, typename UnaryPredicate>
-ForwardIterator max_element_if (ForwardIterator first, ForwardIterator last, UnaryPredicate pred) {
-    auto res = find_if (first, last, pred);
-    for (auto it =  res;
+ForwardIterator max_element_if(ForwardIterator first,
+                               ForwardIterator last,
+                               UnaryPredicate pred) {
+    for (auto it =  find_if(first, last, pred);
               it != last;
-              it =  find_if (next(it), last, pred))
+              it =  find_if(next(it), last, pred))
         if (*res <  *it)
              res =  it;
 
@@ -26,27 +27,21 @@ void Test() {
     auto IsEven = [](int x) {
         return x % 2 == 0;
     };
- {
-        vector<int> v = { 1,20,3,4,10 };
+    {
+        vector<int> v = { 1, 20, 3, 4, 10 };
 
-        Assert(
-            *max_element_if (v.begin(), v.end(), IsEven) == 20
-        );
-    } {
+        Assert(*max_element_if(v.begin(), v.end(), IsEven) == 20);
+    }
+    {
         vector<int> v = { };
 
-        Assert(
-            max_element_if (v.begin(), v.end(), IsEven) == v.end()
-        );
-        Assert(
-            max_element_if (v.begin(), v.end(), IsEven) == v.begin()
-        );
-    } {
+        Assert(max_element_if(v.begin(), v.end(), IsEven) == v.end());
+        Assert(max_element_if(v.begin(), v.end(), IsEven) == v.begin());
+    }
+    {
         vector<int> v = { 1 };
 
-        Assert(
-            max_element_if (v.begin(), v.end(), IsEven) == v.end()
-        );
+        Assert(max_element_if(v.begin(), v.end(), IsEven) == v.end());
     }
 }
 
@@ -54,25 +49,20 @@ void TestUniqueMax() {
     auto IsEven = [](int x) {
         return x % 2 == 0;
     };
- {
+    {
         vector<int> numbers(10);
         iota(numbers.begin(), numbers.end(), 1);
 
-        Assert(
-            max_element_if (numbers.begin(), numbers.end(), IsEven) == --numbers.end(),
-            "Expect the last element"
-        );
+        Assert(max_element_if(numbers.begin(), numbers.end(), IsEven) == --numbers.end(),
+              "Expect the last element");
     } {
         const list<int> hill{ 2, 4, 8, 9, 6, 4, 2 };
 
         auto max_iterator = hill.begin();
         advance(max_iterator, 2);
-        Assert(
-            max_element_if (hill.begin(), hill.end(), IsEven) == max_iterator,
-            "Expect the maximal even number"
-        );
+        Assert(max_element_if(hill.begin(), hill.end(), IsEven) == max_iterator,
+               "Expect the maximal even number");
     }
-
 }
 
 void TestSeveralMax() {
@@ -82,17 +72,14 @@ void TestSeveralMax() {
         }
     };
 
-
     const forward_list<string> text{ "One", "two", "Three", "One", "Two",
       "Three", "one", "Two", "three" };
 
     auto max_iterator = text.begin();
     advance(max_iterator, 4);
 
-    Assert(
-        max_element_if (text.begin(), text.end(), IsCapitalized()) == max_iterator,
-        "Expect the first \"Two\""
-    );
+    Assert(max_element_if(text.begin(), text.end(), IsCapitalized()) == max_iterator,
+           "Expect the first \"Two\"");
 }
 
 void TestNoMax() {
@@ -103,19 +90,15 @@ void TestNoMax() {
         return true;
     };
 
-    Assert(
-        max_element_if (empty.begin(), empty.end(), AlwaysTrue) == empty.end(),
-        "Expect end for empty container"
-    );
+    Assert(max_element_if(empty.begin(), empty.end(), AlwaysTrue) == empty.end(),
+          "Expect end for empty container");
 
     auto AlwaysFalse = [](char) {
         return false;
     };
 
-    Assert(
-        max_element_if (str.begin(), str.end(), AlwaysFalse) == str.end(),
-        "Expect end for AlwaysFalse predicate"
-    );
+    Assert(max_element_if(str.begin(), str.end(), AlwaysFalse) == str.end(),
+           "Expect end for AlwaysFalse predicate");
 }
 
 int main() {

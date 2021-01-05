@@ -1,6 +1,8 @@
-#include "test_runner.h"
 #include <deque>
 #include <vector>
+
+#include "test_runner.h"
+
 using namespace std;
 
 template <typename T>
@@ -11,7 +13,6 @@ class LinkedList {
         Node* next = nullptr;
     };
 
-
     ~LinkedList() {
         while (_head)
             PopFront();
@@ -19,20 +20,21 @@ class LinkedList {
 
     void PushFront(const T& value) {
         Node* new_head = new Node{ value, _head };
-
         _head = new_head;
     }
 
     void InsertAfter(Node* node, const T& value) {
         if (node) {
             Node* new_node = new Node{ value, node->next };
-
             node->next = new_node;
-        } else PushFront(value);
+        } else {
+            PushFront(value);
+        }
     }
     void RemoveAfter(Node* node) {
-        if (!node)
-            PopFront(); else if  (node->next) {
+        if (!node) {
+            PopFront();
+        } else if (node->next) {
             Node* target = node->next;
             node->next = target->next;
             delete target;
@@ -45,14 +47,12 @@ class LinkedList {
             _head = new_head;
         }
     }
-
-        Node* GetHead()       { return _head; }
-  const Node* GetHead() const { return _head; }
+    Node* GetHead()             { return _head; }
+    const Node* GetHead() const { return _head; }
 
  private:
   Node*  _head   = nullptr;
 };
-
 
 template <typename T>
 vector<T> ToVector(const LinkedList<T>& list) {
@@ -63,7 +63,8 @@ vector<T> ToVector(const LinkedList<T>& list) {
   return result;
 }
 
-void TestPushFront() { {
+void TestPushFront() {
+    {
         LinkedList<int> list;
 
         list.PushFront(1);
@@ -76,7 +77,8 @@ void TestPushFront() { {
         const vector<int> expected = { 3, 2, 1 };
 
         ASSERT_EQUAL(ToVector(list), expected);
-    } {
+    }
+    {
         LinkedList<string> list;
         for (int i = 0; i < 5; i++)
             list.PushFront(to_string(i));
@@ -85,14 +87,17 @@ void TestPushFront() { {
         for (int i = 4; i >= 0; i--)
             expected.push_back(to_string(i));
         ASSERT_EQUAL(ToVector(list), expected);
-    } {
+    }
+    {
         LinkedList<int> l;
         l.PushFront(1);
         l.RemoveAfter(l.GetHead());
         ASSERT_EQUAL(ToVector(l), (vector<int>{1}));
     }
 }
-void TestInsertAfter() { {
+
+void TestInsertAfter() {
+    {
         LinkedList<string> list;
 
         list.PushFront("a");
@@ -109,7 +114,8 @@ void TestInsertAfter() { {
         const vector<string> expected2 = { "a", "c", "b" };
 
         ASSERT_EQUAL(ToVector(list), expected2);
-    } {
+    }
+    {
         LinkedList<int> l;
         l.InsertAfter(nullptr, 1);
         ASSERT_EQUAL(l.GetHead()->value, 1);
@@ -119,7 +125,8 @@ void TestInsertAfter() { {
         ASSERT(l.GetHead()->next->next == nullptr);
     }
 }
-void TestRemoveAfter() { {
+void TestRemoveAfter() {
+    {
         LinkedList<int> list;
         for (int i = 1; i <= 5; ++i) {
             list.PushFront(i);
@@ -130,8 +137,8 @@ void TestRemoveAfter() { {
         ASSERT_EQUAL(ToVector(list), expected);
 
         auto next_to_head = list.GetHead()->next;
-        list.RemoveAfter(next_to_head); // удаляем 3
-        list.RemoveAfter(next_to_head); // удаляем 2
+        list.RemoveAfter(next_to_head);  // удаляем 3
+        list.RemoveAfter(next_to_head);  // удаляем 2
 
         const vector<int> expected1 = { 5, 4, 1 };
 
@@ -141,7 +148,8 @@ void TestRemoveAfter() { {
             list.RemoveAfter(list.GetHead());
         }
         ASSERT_EQUAL(list.GetHead()->value, 5);
-    } {
+    }
+    {
         LinkedList<int> l;
         l.RemoveAfter(nullptr);
         ASSERT(l.GetHead() == nullptr);
@@ -150,7 +158,7 @@ void TestRemoveAfter() { {
             l.PushFront(i);
         l.RemoveAfter(l.GetHead()->next->next);
         ASSERT_EQUAL(ToVector(l), (vector<int>{3, 2, 1}));
- 
+
         l.RemoveAfter(l.GetHead());
         ASSERT_EQUAL(ToVector(l), (vector<int>{3, 1}));
 
@@ -160,7 +168,7 @@ void TestRemoveAfter() { {
         l.RemoveAfter(l.GetHead()->next);
         ASSERT_EQUAL(ToVector(l), (vector<int>{}));
         ASSERT(l.GetHead() == nullptr);
-        //ASSERT_EQUAL(l, nullptr);
+        // ASSERT_EQUAL(l, nullptr);
     }
 }
 void TestPopFront() {

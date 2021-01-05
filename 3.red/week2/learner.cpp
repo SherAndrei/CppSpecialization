@@ -25,18 +25,16 @@ class Learner {
 
     vector<string> KnownWords() {
         return { dict.begin(), dict.end() };
-
     }
 };
 
 
 void TestSpeed() {
-
     vector<string> v;
 
     for (int i = 5000; i >= -5000; --i)
         v.push_back(to_string(i));
- {
+    {
         LOG_DURATION("Learning");
         Learner l;
         ASSERT_EQUAL(l.Learn(v), 10'001); {
@@ -44,8 +42,6 @@ void TestSpeed() {
             ASSERT_EQUAL(l.KnownWords().size(), 10'001u);
         }
     }
-
-
 }
 
 int main() {
