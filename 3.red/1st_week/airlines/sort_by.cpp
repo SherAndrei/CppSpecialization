@@ -1,13 +1,15 @@
-#include "test_runner.h"
-#include "airline_ticket.h"
-
 #include <algorithm>
 #include <numeric>
 #include <iomanip>
+
+#include "test_runner.h"
+#include "airline_ticket.h"
+
 using namespace std;
 
 #define DATE_OPERATOR(x)                                                          \
-bool operator x (Date lhs, Date rhs)                                              \ {                                                                                 \
+bool operator x(Date lhs, Date rhs)                                               \
+{                                                                                 \
     return tie(lhs.year, lhs.month, lhs.day) x tie(rhs.year, rhs.month, rhs.day); \
 }
 
@@ -15,9 +17,9 @@ DATE_OPERATOR(<);
 DATE_OPERATOR(==);
 DATE_OPERATOR(!=);
 
-ostream& operator << (ostream& out, Date date)                                               {                                                                              
-    out
-        << setfill('0') << setw(4) << date.year << "-"
+ostream& operator << (ostream& out, Date date)
+{
+    out << setfill('0') << setw(4) << date.year << "-"
         << setfill('0') << setw(2) << date.month << "-"
         << setfill('0') << setw(2) << date.day;
     return out;
@@ -25,7 +27,8 @@ ostream& operator << (ostream& out, Date date)                                  
 
 
 #define TIME_OPERATOR(x)                                                          \
-bool operator x (Time lhs, Time rhs)                                              \ {                                                                                 \
+bool operator x(Time lhs, Time rhs)                                               \
+{                                                                                 \
     return tie(lhs.hours, lhs.minutes) x tie(rhs.hours, rhs.minutes);             \
 }
 
@@ -44,7 +47,7 @@ ostream& operator << (ostream& out, Time time) {
 #define SORT_BY(field)                                   \
 [](const AirlineTicket& lhs, const AirlineTicket& rhs) { \
 return lhs.field < rhs.field;                            \
-}                                                     
+}
 
 void TestSortBy() {
     vector<AirlineTicket> tixs = {

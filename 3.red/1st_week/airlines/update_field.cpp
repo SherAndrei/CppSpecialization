@@ -1,9 +1,10 @@
-#include "test_runner.h"
-#include "airline_ticket.h"
-
 #include <tuple>
 #include <iomanip>
 #include <sstream>
+
+#include "test_runner.h"
+#include "airline_ticket.h"
+
 using namespace std;
 
 #define DATE_OPERATOR(x)                                                          \
@@ -33,7 +34,8 @@ ostream& operator << (ostream& out, Date date) {
 
 
 #define TIME_OPERATOR(x)                                                          \
-bool operator x (Time lhs, Time rhs)                                              \ {                                                                                 \
+bool operator x (Time lhs, Time rhs)                                              \
+{                                                                                 \
     return tie(lhs.hours, lhs.minutes) x tie(rhs.hours, rhs.minutes);             \
 }
 
@@ -54,9 +56,10 @@ istream& operator >> (istream& in, Time& time) {
     in >> time.minutes;
     return in;
 }
-#define UPDATE_FIELD(ticket, field, updates) \ {                                            \
+#define UPDATE_FIELD(ticket, field, updates) \
+{                                            \
     auto it = updates.find(#field);          \
-    if (it != updates.end()){                \
+    if (it != updates.end()) {               \
         istringstream is(it->second);        \
         is >> ticket.field;                  \
     }                                        \
@@ -91,8 +94,6 @@ void TestUpdate() {
     UPDATE_FIELD(t, arrival_time, updates2);
     UPDATE_FIELD(t, price, updates2);
 
-    // updates2 �� �������� ������ "departure_date" � "departure_time", �������
-    // �������� ���� ����� �� ������ ����������
     ASSERT_EQUAL(t.departure_date, (Date{ 2018, 2, 28 }));
     ASSERT_EQUAL(t.departure_time, (Time{ 17, 40 }));
     ASSERT_EQUAL(t.price, 12550);

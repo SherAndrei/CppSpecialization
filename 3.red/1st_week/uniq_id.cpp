@@ -5,7 +5,7 @@ using namespace std;
 
 #define LOG(x) cout << #x << " = " << x << endl
 
-#define CONCAT(x) var ## x
+#define CONCAT(x) var##x
 #define ASSIST(x) CONCAT(x)
 #define UNIQ_ID ASSIST(__LINE__)
 
