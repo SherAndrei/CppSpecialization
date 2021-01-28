@@ -42,38 +42,25 @@ class NonRepetativeString {
     String data_;
 };
 
+template<typename String>
+bool operator < (const NonRepetativeString<String>& lhs,
+                 const NonRepetativeString<String>& rhs) {
+    return lhs.str() < rhs.str();
+}
+
 
 template <typename String>
 std::vector<Group<String>> GroupHeavyStrings(std::vector<String> strings) {
-    std::vector<Group<String>> groups;
-    std::map<size_t, NonRepetativeString<String>> pos_to_strings;
-    bool is_in_group = false;
-    int group_num = -1;
+    std::map<NonRepetativeString<String>, Group<String>> groups_map;
 
     for (auto& string : strings) {
-        is_in_group = false;
-        const NonRepetativeString<String> current_str(string);
-        for (size_t i = 0u; i < groups.size(); i++) {
-            const NonRepetativeString<String>& group_str = pos_to_strings.at(i);
-            // ищем слово в группе
-            if (current_str.str() == group_str.str()) {
-                is_in_group = true;
-                group_num = i;
-                break;
-            } else {
-                is_in_group = false;
-            }
-        }
-
-        if (is_in_group) {
-            groups[group_num].push_back(std::move(string));
-        } else {
-            size_t new_group_pos = groups.size();
-            pos_to_strings[new_group_pos] = std::move(current_str);
-            groups.push_back({std::move(string)});
-        }
+        groups_map[NonRepetativeString<String>(string)].push_back(std::move(string));
     }
 
+    std::vector<Group<String>> groups;
+    for (auto& [key, group] : groups_map) {
+        groups.push_back(move(group));
+    }
     return groups;
 }
 
