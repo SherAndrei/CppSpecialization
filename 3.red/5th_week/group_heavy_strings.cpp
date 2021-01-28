@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <string>
+#include <cstring>
 #include <string_view>
 #include <vector>
 #include <map>
@@ -21,42 +22,41 @@ using Group = std::vector<String>;
 template <typename String>
 using Char = typename String::value_type;
 
+
+template<typename String>
 class NonRepetativeString {
  public:
     NonRepetativeString() = default;
 
-    explicit NonRepetativeString(std::string_view strv) {
-        for (const auto& letter : strv) {
-            size_t pos = data_.find(letter);
-            if (pos == std::string::npos) {
-                data_.push_back(letter);
-            }
-        }
+    explicit NonRepetativeString(const String& str) {
+        data_ = str;
+        std::sort(data_.begin(), data_.end());
+        data_.erase(std::unique(begin(data_), end(data_)), end(data_));
     }
 
-    std::string& str() {
+    const String& str() const {
         return data_;
     }
 
  private:
-    std::string data_;
+    String data_;
 };
 
 
 template <typename String>
 std::vector<Group<String>> GroupHeavyStrings(std::vector<String> strings) {
     std::vector<Group<String>> groups;
-    std::map<size_t, NonRepetativeString> pos_to_strings;
+    std::map<size_t, NonRepetativeString<String>> pos_to_strings;
     bool is_in_group = false;
     int group_num = -1;
 
     for (auto& string : strings) {
         is_in_group = false;
+        const NonRepetativeString<String> current_str(string);
         for (size_t i = 0u; i < groups.size(); i++) {
-            NonRepetativeString& group_str = pos_to_strings.at(i);
+            const NonRepetativeString<String>& group_str = pos_to_strings.at(i);
             // ищем слово в группе
-            if (group_str.str().find_first_not_of(string) == std::string::npos &&
-                string.find_first_not_of(group_str.str()) == std::string::npos) {
+            if (current_str.str() == group_str.str()) {
                 is_in_group = true;
                 group_num = i;
                 break;
@@ -69,7 +69,7 @@ std::vector<Group<String>> GroupHeavyStrings(std::vector<String> strings) {
             groups[group_num].push_back(std::move(string));
         } else {
             size_t new_group_pos = groups.size();
-            pos_to_strings[new_group_pos] = NonRepetativeString(string);
+            pos_to_strings[new_group_pos] = std::move(current_str);
             groups.push_back({std::move(string)});
         }
     }
