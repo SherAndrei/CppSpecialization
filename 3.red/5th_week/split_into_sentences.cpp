@@ -19,10 +19,9 @@ vector<Sentence<Token>> SplitIntoSentences(vector<Token> tokens) {
         bool is_end = it->IsEndSentencePunctuation() &&
                      !next_it->IsEndSentencePunctuation() &&
                       next_it != tokens.end();
+        result.back().push_back(move(*it));
         if (is_end)
             result.push_back({});
-        auto& sentence = result.back();
-        sentence.push_back(move(*it));
     }
     return result;
 }
@@ -47,7 +46,7 @@ ostream& operator<<(ostream& stream, const TestToken& token) {
 // Для проверки отсутствия копирований в функции SplitIntoSentences
 // необходимо написать отдельный тест.
 void TestSplitting() {
-  ASSERT_EQUAL(
+    ASSERT_EQUAL(
     SplitIntoSentences(vector<TestToken>({{"Split"}, {"into"}, {"sentences"}, {"!"}})),
     vector<Sentence<TestToken>>({
         {{"Split"}, {"into"}, {"sentences"}, {"!"}}
@@ -61,7 +60,7 @@ void TestSplitting() {
     })
   );
 
-  ASSERT_EQUAL(
+    ASSERT_EQUAL(
     SplitIntoSentences(vector<TestToken>({{"Split"}, {"into"}, {"sentences"}, {"!", true}, {"!", true}, {"Without"}, {"copies"}, {".", true}})),
     vector<Sentence<TestToken>>({
         {{"Split"}, {"into"}, {"sentences"}, {"!", true}, {"!", true}},
