@@ -11,24 +11,45 @@
 
 #include "test_runner.h"
 
+template <typename Iterator>
+class IteratorRange {
+ public:
+    IteratorRange(Iterator begin, Iterator end)
+        : _begin(begin), _end(end), _size(std::distance(begin, end)) {}
+
+    void set_begin(Iterator begin) { _begin = begin; }
+    void set_end(Iterator end)     { _end   = end; }
+
+    Iterator begin()  const { return _begin; }
+    Iterator end()    const { return _end; }
+    size_t   size()   const { return _size; }
+ private:
+    Iterator _begin, _end;
+    size_t _size;
+};
+
 template <typename T>
 class PriorityCollection {
  private:
     using Priority   = int;
     using Position   = typename std::list<T>::iterator;
-    using Collection = std::map<Priority, std::list<T>>;
+    using Collection = std::list<T>;
     Collection collection_;
+    std::map<Priority, IteratorRange<Position>> priority_ranges;
 
  public:
-  using Id = typename std::pair<const Priority, Position>;
+  using Id = typename std::pair<Priority, Position>;
 
  public:
+  PriorityCollection() {
+      priority_ranges.emplace(0, IteratorRange(collection_.begin(), collection_.end()));
+  }
   // Добавить объект с нулевым приоритетом
   // с помощью перемещения и вернуть его идентификатор
   Id Add(T object) {
-      auto& zero = collection_[0];
-      zero.push_back(std::move(object));
-      return {0, std::prev(zero.end())};
+    auto res_iter = collection_.insert(priority_ranges.at(0).end(), std::move(object));
+    priority_ranges.at(0) = {collection_.begin(), std::next(res_iter)};
+    return {0, res_iter};
   }
 
   // Добавить все элементы диапазона [range_begin, range_end)
@@ -42,31 +63,58 @@ class PriorityCollection {
   // Определить, принадлежит ли идентификатор какому-либо
   // хранящемуся в контейнере объекту
   bool IsValid(Id id) const {
-      if (collection_.count(id.first)) {
-          auto& cont = collection_.at(id.first);
-          return (id.second != cont.end());
-      }
-      return false;
+      return priority_ranges.count(id.first) && id.second != collection_.end();
   }
 
-  // Получить объект по идентификатору
-  const T& Get(Id id) const {
+    // Получить объект по идентификатору
+    const T& Get(Id id) const {
         return *id.second;
-  }
+    }
 
-  // Увеличить приоритет объекта на 1
-  void Promote(Id id) {
-      auto& lower_list  = collection_[id.first];
-      auto& higher_list = collection_[id.first + 1];
-      higher_list.splice(higher_list.end(), lower_list, id.second, std::next(id.second));
-  }
+ private:
+    template<typename Iterator>
+    void shift(Iterator from, Iterator to) {
+        collection_.splice(to, collection_, from);
+    }
 
-  // Получить объект с максимальным приоритетом и его приоритет
-  std::pair<const T&, int> GetMax() const {
-    auto& last_pair = *std::prev(collection_.cend());
-    const T& object = last_pair.second.back();
-    return {object, last_pair.first};
-  }
+ public:
+    // Увеличить приоритет объекта на 1
+    void Promote(Id id) {
+        // если такой приоритет + 1 уже есть, то
+        // вставляем в конец рэнжа
+        auto& [current_priority, object_position] = id;
+        const auto& [lower, upper] = priority_ranges.equal_range(current_priority);
+        if (lower == priority_ranges.end() &&
+            upper == priority_ranges.end()) {
+            shift(object_position, collection_.end());
+            priority_ranges.emplace(current_priority + 1,
+                                    IteratorRange(std::prev(collection_.end()), collection_.end()));
+        } else if (lower != priority_ranges.end() &&
+                   upper == priority_ranges.end()) {
+            IteratorRange<Position>& current_range = lower->second;
+            if (current_range.size() == 1) {
+                priority_ranges.erase(current_priority);
+            }
+            shift(object_position, collection_.end());
+            priority_ranges.emplace(current_priority + 1,
+                    IteratorRange(std::prev(collection_.end()), collection_.end()));
+        }
+
+
+
+        // если приоритета не было, то
+        // находим ближайший правый элемент к этому приоритету
+        // если его нет, вставляем в конец списка
+        // если есть делаем сплайс
+    }
+
+    // Получить объект с максимальным приоритетом и его приоритет
+    std::pair<const T&, int> GetMax() const {
+        const auto& pair = std::prev(priority_ranges.end());
+        const IteratorRange<Position>& max_prior_range = pair->second;
+        const T& last_max_prior_elem = *(std::prev(max_prior_range.end()));
+        return {last_max_prior_elem, pair->first};
+    }
 
   // Аналогично GetMax, но удаляет элемент из контейнера
 //   pair<T, int> PopMax();
@@ -81,28 +129,56 @@ class StringNonCopyable : public std::string {
   StringNonCopyable& operator=(StringNonCopyable&&) = default;
 };
 
-void TestNoCopy() {
-  PriorityCollection<StringNonCopyable> strings;
-  const auto white_id = strings.Add("white");
-  const auto yellow_id = strings.Add("yellow");
-  const auto red_id = strings.Add("red");
-  std::cout << strings.IsValid(white_id) << "\n";
+void TestAdd() {
+    PriorityCollection<StringNonCopyable> strings;
+    const auto white_id = strings.Add("white");
+    const auto yellow_id = strings.Add("yellow");
+    const auto red_id = strings.Add("red");
 
-  strings.Promote(yellow_id);
-  for (int i = 0; i < 3; ++i) {
-    strings.Promote(red_id);
-  }
-  strings.Promote(yellow_id);
-  {
     ASSERT_EQUAL(strings.Get(red_id), "red");
     ASSERT_EQUAL(strings.Get(yellow_id), "yellow");
     ASSERT_EQUAL(strings.Get(white_id), "white");
-  }
-  {
-    const auto& pair = strings.GetMax();
-    ASSERT_EQUAL(pair.first, "red");
-    ASSERT_EQUAL(pair.second, 2);
-  }
+}
+
+
+void TestPromote() {
+    PriorityCollection<StringNonCopyable> strings;
+
+    const auto white_id = strings.Add("white");
+
+    const auto& pair_1 = strings.GetMax();
+    ASSERT_EQUAL(pair_1.first, "white");
+    ASSERT_EQUAL(pair_1.second, 0);
+
+    strings.Promote(white_id);
+
+    const auto& pair_2 = strings.GetMax();
+    ASSERT_EQUAL(pair_2.first, "white");
+    ASSERT_EQUAL(pair_2.second, 1);
+
+    strings.Promote(white_id);
+
+    const auto& pair_3 = strings.GetMax();
+    ASSERT_EQUAL(pair_3.first, "white");
+    ASSERT_EQUAL(pair_3.second, 2);
+}
+
+void TestNoCopy() {
+//   PriorityCollection<StringNonCopyable> strings;
+//   const auto white_id = strings.Add("white");
+//   const auto yellow_id = strings.Add("yellow");
+//   const auto red_id = strings.Add("red");
+
+//   strings.Promote(yellow_id);
+//   for (int i = 0; i < 3; ++i) {
+//     strings.Promote(red_id);
+//   }
+//   strings.Promote(yellow_id);
+//   {
+//     const auto& pair = strings.GetMax();
+//     ASSERT_EQUAL(pair.first, "red");
+//     ASSERT_EQUAL(pair.second, 2);
+//   }
 //   {
 //     const auto item = strings.PopMax();
 //     ASSERT_EQUAL(item.first, "red");
@@ -122,6 +198,8 @@ void TestNoCopy() {
 
 int main() {
   TestRunner tr;
+  RUN_TEST(tr, TestAdd);
+  RUN_TEST(tr, TestPromote);
   RUN_TEST(tr, TestNoCopy);
   return 0;
 }
