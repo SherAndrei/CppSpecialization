@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define PRINT_VALUES(out, x, y)  out << (x) << endl << (y) << endl
+#define PRINT_VALUES(out, x, y)  (out) << (x) << endl << (y) << endl
 
 void Test() {
     {

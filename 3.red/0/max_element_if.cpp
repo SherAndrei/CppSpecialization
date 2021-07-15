@@ -12,15 +12,12 @@ using namespace std;
 
 template<typename ForwardIterator, typename UnaryPredicate>
 ForwardIterator max_element_if(ForwardIterator first,
-                               ForwardIterator last,
-                               UnaryPredicate pred) {
-    for (auto it =  find_if(first, last, pred);
-              it != last;
-              it =  find_if(next(it), last, pred))
-        if (*res <  *it)
-             res =  it;
-
-    return res;
+    ForwardIterator last, UnaryPredicate pred) {
+    ForwardIterator max_pos = first = find_if(first, last, pred);
+    for (; first != last; first = find_if(++first, last, pred)) {
+        max_pos = *max_pos < *first ? first : max_pos;
+    }
+    return max_pos;
 }
 
 void Test() {
@@ -30,18 +27,18 @@ void Test() {
     {
         vector<int> v = { 1, 20, 3, 4, 10 };
 
-        Assert(*max_element_if(v.begin(), v.end(), IsEven) == 20);
+        ASSERT(*max_element_if(v.begin(), v.end(), IsEven) == 20);
     }
     {
         vector<int> v = { };
 
-        Assert(max_element_if(v.begin(), v.end(), IsEven) == v.end());
-        Assert(max_element_if(v.begin(), v.end(), IsEven) == v.begin());
+        ASSERT(max_element_if(v.begin(), v.end(), IsEven) == v.end());
+        ASSERT(max_element_if(v.begin(), v.end(), IsEven) == v.begin());
     }
     {
         vector<int> v = { 1 };
 
-        Assert(max_element_if(v.begin(), v.end(), IsEven) == v.end());
+        ASSERT(max_element_if(v.begin(), v.end(), IsEven) == v.end());
     }
 }
 
