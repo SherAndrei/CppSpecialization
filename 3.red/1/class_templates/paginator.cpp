@@ -12,27 +12,28 @@ template <typename Iterator>
 class IteratorRange {
  public:
     IteratorRange(Iterator begin, Iterator end)
-        : _begin(begin), _end(end), _size(distance(begin, end)) {}
+        : _begin(begin), _end(end) {}
 
     Iterator begin()  const { return _begin; }
     Iterator end()    const { return _end; }
-    size_t   size()   const { return _size; }
+    size_t   size()   const { return distance(_begin, _end); }
  private:
     const Iterator _begin, _end;
-    const size_t _size;
 };
 
 template <typename Iterator>
 class Paginator {
  public:
     Paginator(Iterator begin, Iterator end, size_t page_size) {
-        for (size_t left = distance(begin, end); left > 0; ) {
-            size_t current_page_size  = min(page_size, left);
-            Iterator current_page_end = next(begin, current_page_size);
-            pages.push_back({ begin, current_page_end });
+        size_t remaining_size = distance(begin, end);
+        Iterator current_page_begin = begin;
+        while (remaining_size > 0) {
+            size_t current_page_size  = min(page_size, remaining_size);
+            Iterator current_page_end = next(current_page_begin, current_page_size);
+            pages.push_back({ current_page_begin, current_page_end });
 
-            left -= current_page_size;
-            begin = current_page_end;
+            remaining_size -= current_page_size;
+            current_page_begin = current_page_end;
         }
     }
 
@@ -161,13 +162,13 @@ void TestPagePagination() {
     ASSERT_EQUAL(lines, expected);
 }
 
-/*
+
 int main() {
-   RUN_TEST(TestPageCounts);
-   RUN_TEST(TestLooping);
-   RUN_TEST(TestModification);
-   RUN_TEST(TestPageSizes);
-   RUN_TEST(TestConstContainer);
-   RUN_TEST(TestPagePagination);
+    TestRunner tr;
+    RUN_TEST(tr, TestPageCounts);
+    RUN_TEST(tr, TestLooping);
+    RUN_TEST(tr, TestModification);
+    RUN_TEST(tr, TestPageSizes);
+    RUN_TEST(tr, TestConstContainer);
+    RUN_TEST(tr, TestPagePagination);
 }
-*/

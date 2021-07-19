@@ -1,8 +1,8 @@
+#include <algorithm>
+
 #include "student.h"
 #include "test_runner.h"
 #include "profile.h"
-
-#include <algorithm>
 
 using namespace std;
 

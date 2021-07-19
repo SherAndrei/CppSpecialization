@@ -1,4 +1,5 @@
 #include <string>
+#include <algorithm>  // std::min
 
 #include "test_runner.h"
 
@@ -16,7 +17,7 @@ class Editor {
       shift(right, buffer);
   }
   void Copy(size_t tokens = 1) {
-      for (size_t i = 0; i < min(tokens, right.size()); ++i)
+      for (size_t i = 0; i < std::min(tokens, right.size()); ++i)
         buffer.push_back(right[right.size() - i - 1]);
   }
   void Paste() {
@@ -53,7 +54,7 @@ void TypeText(Editor& editor, const std::string& text) {
 }
 
 void TestEditing() {
-    {
+  {
     Editor editor;
 
     const size_t text_len = 12;
@@ -152,21 +153,12 @@ using namespace std;
 
 class Editor {
  public:
-  Editor()
-    : pos(text.end()) {
-  }
+  Editor() : pos(text.end()) {}
 
-  void Left() {
-    pos = Advance(pos, -1);
-  }
+  void Left() { pos = Advance(pos, -1); }
+  void Right() { pos = Advance(pos, 1); }
 
-  void Right() {
-    pos = Advance(pos, 1);
-  }
-
-  void Insert(char token) {
-    text.insert(pos, token);
-  }
+  void Insert(char token) { text.insert(pos, token); }
 
   void Cut(size_t tokens = 1) {
     auto pos2 = Advance(pos, tokens);

@@ -49,8 +49,8 @@ class BookingManager {
 
 
     struct Data {
-        size_t               rooms = 0;
-        set<size_t>           clients;
+        size_t rooms = 0;
+        set<size_t>  clients;
         queue<Reservation> reservations;
     };
 
@@ -67,12 +67,14 @@ class BookingManager {
     bool IsLastDay(int64_t another) {
         return (last_time - ONE_DAY < another) && (another <= last_time);
     }
-    static const int64_t ONE_DAY = 86400;
+    static constexpr int64_t ONE_DAY = 86400;
 
  private:
     map<string, Data> hotels;
     int64_t last_time = 0;
 };
+
+#if TEST
 
 void TestCoursera() {
     {
@@ -107,12 +109,15 @@ void TestCoursera() {
     }
 }
 
+#endif  // TEST
+
 int main() {
+#if TEST
+    TestRunner t;
+    RUN_TEST(t, TestCoursera);
+#else
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-
-    // TestRunner t;
-    // RUN_TEST(t, TestCoursera);
 
     BookingManager manager;
 
@@ -143,4 +148,5 @@ int main() {
     }
 
     return 0;
+#endif
 }

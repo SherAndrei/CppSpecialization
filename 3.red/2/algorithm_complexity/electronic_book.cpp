@@ -2,14 +2,12 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#include <random>
 
 #include "profile.h"
 #include "test_runner.h"
-#include <random>
 
 using namespace std;
-
-#define _DOUBLE(x) static_cast<double>(x)
 
 class ReadingManager {
  public:
@@ -32,20 +30,22 @@ class ReadingManager {
         }
     }
     double Cheer(int id) {
-        if (users.count(id)) {
-            return (users.size() == 1u)
-                ? 1.0
-                : _DOUBLE(lagging_people[users[id]]) / _DOUBLE(users.size() - 1);
-        }
-        return 0.0;
+        if (!users.count(id))
+            return 0.0;
+
+        return (users.size() == 1u)
+            ? 1.0
+            : lagging_people[users[id]] * 1. / (users.size() - 1);
     }
 
  private:
-    static const int MAX_PAGE_COUNT = 1'000;
+    static constexpr int MAX_PAGE_COUNT = 1'000;
 
     map<int, int> users;
     vector<int> lagging_people;
 };
+
+#if TEST
 
 void TestReadPage() {
     {
@@ -267,7 +267,14 @@ void TestSpeed() {
     }
 }
 
+#endif  // TEST
+
 int main() {
+#if TEST
+    TestRunner tr;
+    RUN_TEST(tr, TestReadPage);
+    RUN_TEST(tr, TestSpeed);
+#else
     // Для ускорения чтения данных отключается синхронизация
     // cin и cout с stdio,
     // а также выполняется отвязка cin от cout
@@ -294,60 +301,5 @@ int main() {
     }
 
     return 0;
+#endif
 }
-
-/*
-class ReadingManager {
- public:
-  ReadingManager()
-        // -1 значит, что не случилось ни одного READ
-      : user_page_counts_(MAX_USER_COUNT_ + 1, -1),
-        page_achieved_by_count_(MAX_PAGE_COUNT_ + 1, 0) {}
-
-  void Read(int user_id, int page_count) {
-    UpdatePageRange(user_page_counts_[user_id] + 1, page_count + 1);
-    user_page_counts_[user_id] = page_count;
-  }
-
-  double Cheer(int user_id) const {
-    const int pages_count = user_page_counts_[user_id];
-    if (pages_count == -1) {
-      return 0;
-    }
-    const int user_count = GetUserCount();
-    if (user_count == 1) {
-      return 1;
-    }
-    // По умолчанию деление целочисленное, поэтому
-    // нужно привести числитель к типу double.
-    // Простой способ сделать это — умножить его на 1.0.
-    return (user_count - page_achieved_by_count_[pages_count]) * 1.0
-           / (user_count - 1);
-  }
-
- private:
-  // Статическое поле не принадлежит какому-либо конкретному объекту класса.
-  // По сути это глобальная переменная, в данном случае - константная.
-  // Будь она публичной, к ней можно было бы обратиться снаружи
-  // следующим образом: ReadingManager::MAX_USER_COUNT.
-  static const int MAX_USER_COUNT_ = 100'000;
-  static const int MAX_PAGE_COUNT_ = 1'000;
-
-  // Номер страницы, до которой дочитал пользователь <ключ>
-  vector<int> user_page_counts_;
-  // Количество пользователей, дочитавших (как минимум) до страницы <индекс>
-  vector<int> page_achieved_by_count_;
-
-  int GetUserCount() const {
-    return page_achieved_by_count_[0];
-  }
-
-  // lhs включительно, rhs не включительно
-  void UpdatePageRange(int lhs, int rhs) {
-    for (int i = lhs; i < rhs; ++i) {
-      ++page_achieved_by_count_[i];
-    }
-  }
-};
-
-*/

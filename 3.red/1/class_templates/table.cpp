@@ -63,22 +63,25 @@ class Table {
 };
 
 
-void TestSize() { {
+void MyTestSize() {
+    {
         Table<int> t(1, 1);
         ASSERT_EQUAL(t.Size().first, 1u);
         ASSERT_EQUAL(t.Size().second, 1u);
-    } {
+    }
+    {
         Table<int> t(0, 1);
         ASSERT_EQUAL(t.Size().first, 0u);
         ASSERT_EQUAL(t.Size().second, 0u);
-    } {
+    }
+    {
         Table<int> t(1, 0);
         ASSERT_EQUAL(t.Size().first, 0u);
         ASSERT_EQUAL(t.Size().second, 0u);
     }
 }
 
-void TestFill() {
+void MyTestFill() {
     {
         Table<int> t(3, 3);
         t.fill(1);
@@ -109,7 +112,7 @@ void TestFill() {
     }
 }
 
-void TestOperator() {
+void MyTestOperator() {
     {
         Table<int> t(1, 1);
         t[0][0] = 42;
@@ -117,7 +120,7 @@ void TestOperator() {
     }
 }
 
-void TestResize() {
+void MyTestResize() {
     {
         Table<int> t(1, 1);
         t.fill(1);
@@ -141,9 +144,10 @@ void TestResize() {
 }
 
 int main() {
-    RUN_TEST(TestSize);
-    RUN_TEST(TestFill);
-    RUN_TEST(TestOperator);
-    RUN_TEST(TestResize);
+    TestRunner tr;
+    RUN_TEST(tr, MyTestSize);
+    RUN_TEST(tr, MyTestFill);
+    RUN_TEST(tr, MyTestOperator);
+    RUN_TEST(tr, MyTestResize);
     return 0;
 }

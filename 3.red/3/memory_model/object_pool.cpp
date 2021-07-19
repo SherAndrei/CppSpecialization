@@ -22,30 +22,24 @@ class ObjectPool {
         }
         return result;
     }
+
     T* TryAllocate() {
-        if (!freed.empty()) {
-            T* result = *(malloced.insert(freed.front()).first);
-            freed.pop_front();
-            return result;
-        }
-        return nullptr;
+        if (freed.empty())
+            return nullptr;
+        return Allocate();
     }
 
     void Deallocate(T* object) {
         const auto it = malloced.find(object);
-        if (it != malloced.end()) {
-            freed.push_back(*it);
-            malloced.erase(it);
-        } else {
+        if (it == malloced.end())
             throw invalid_argument("");
-        }
+        freed.push_back(object);
+        malloced.erase(it);
     }
 
     ~ObjectPool() {
-        while (!malloced.empty()) {
-            delete *(malloced.begin());
-            malloced.erase(malloced.begin());
-        }
+        for (auto p : malloced)
+            delete p;
         while (!freed.empty()) {
             delete freed.back();
             freed.pop_back();
@@ -84,61 +78,3 @@ int main() {
     RUN_TEST(tr, TestObjectPool);
     return 0;
 }
-
-/*
-template <class T>
-class ObjectPool {
- public:
-  T* Allocate();
-  T* TryAllocate();
-
-  void Deallocate(T* object);
-
-  ~ObjectPool();
-
- private:
-  queue<T*> free;
-  set<T*> allocated;
-};
-
-
-template <typename T>
-T* ObjectPool<T>::Allocate() {
-  if (free.empty()) {
-    free.push(new T);
-  }
-  auto ret = free.front();
-  free.pop();
-  allocated.insert(ret);
-  return ret;
-}
-
-template <typename T>
-T* ObjectPool<T>::TryAllocate() {
-  if (free.empty()) {
-    return nullptr;
-  }
-  return Allocate();
-}
-
-template <typename T>
-void ObjectPool<T>::Deallocate(T* object) {
-  if (allocated.find(object) == allocated.end()) {
-    throw invalid_argument("");
-  }
-  allocated.erase(object);
-  free.push(object);
-}
-
-template <typename T>
-ObjectPool<T>::~ObjectPool() {
-  for (auto x : allocated) {
-    delete x;
-  }
-  while (!free.empty()) {
-    auto x = free.front();
-    free.pop();
-    delete x;
-  }
-}
-*/

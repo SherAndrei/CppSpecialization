@@ -11,7 +11,8 @@
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "-I",
-                "${workspaceFolder}/utils/"
+                "${workspaceFolder}/utils/",
+                "-std=c++20"
             ],
             "options": {
                 "cwd": "${fileDirname}"

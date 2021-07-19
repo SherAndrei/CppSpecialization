@@ -24,17 +24,21 @@ void ReversedCopy(T* source, size_t count, T* destination) {
 
     if (d_last <= _first || _last <= d_first) {
         reverse_copy(_first, _last, d_first);
-    } else if (d_first > _first) {
+        return;
+    }
+
+    if (d_first > _first) {
         for (size_t i = 0; _first + i < d_first; ++i) {
             *(d_last - i - 1) = *(_first + i);
         }
         reverse(d_first, _last);
-    } else {
-        for (size_t i = 0; _last - i - 1 >= d_last; ++i) {
-            *(d_first + i) = *(_last - i - 1);
-        }
-        reverse(_first, d_last);
+        return;
     }
+
+    for (size_t i = 0; _last - i - 1 >= d_last; ++i) {
+        *(d_first + i) = *(_last - i - 1);
+    }
+    reverse(_first, d_last);
 }
 
 void TestSwap() {

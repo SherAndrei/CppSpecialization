@@ -41,11 +41,11 @@ class LinkedList {
         }
     }
     void PopFront() {
-        if (_head) {
-            Node* new_head = _head->next;
-            delete _head;
-            _head = new_head;
-        }
+        if (!_head)
+            return;
+        Node* new_head = _head->next;
+        delete _head;
+        _head = new_head;
     }
     Node* GetHead()             { return _head; }
     const Node* GetHead() const { return _head; }
@@ -125,6 +125,7 @@ void TestInsertAfter() {
         ASSERT(l.GetHead()->next->next == nullptr);
     }
 }
+
 void TestRemoveAfter() {
     {
         LinkedList<int> list;

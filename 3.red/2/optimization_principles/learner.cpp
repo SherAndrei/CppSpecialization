@@ -17,7 +17,8 @@ class Learner {
     int Learn(const vector<string>& words) {
         int newWords = 0;
         for (const auto& word : words) {
-            if (dict.insert(word).second)
+            auto [it, success] = dict.insert(word);
+            if (success)
                 ++newWords;
         }
         return newWords;
