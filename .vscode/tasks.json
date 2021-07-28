@@ -12,7 +12,12 @@
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "-I",
                 "${workspaceFolder}/utils/",
-                "-std=c++20"
+                "-std=c++20",
+                "-pthread",
+                "-W",
+                "-Werror",
+                "-Wextra",
+                "-Wpedantic"
             ],
             "options": {
                 "cwd": "${fileDirname}"
